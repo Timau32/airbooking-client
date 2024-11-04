@@ -1,3 +1,4 @@
+import "./scss/app.scss"
 
 function App() {
   return <div>App</div>;
