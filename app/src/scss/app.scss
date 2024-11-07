@@ -1,8 +1,8 @@
-@import "~antd/dist/reset.css";
-@import "~react-leaflet-markercluster/dist/styles.min.css";
-@import "~leaflet/dist/leaflet.css";
-@import "./libs/normalize";
-@import "./variables/colors.module.scss";
+@use "../../node_modules/antd/dist/reset.css";
+@use "../../node_modules/react-leaflet-markercluster/dist/styles.min.css";
+@use "../../node_modules/leaflet/dist/leaflet.css";
+@use "./libs/normalize";
+@use "./variables/colors.module.scss" as *;
 
 /* Customize website's scrollbar like Mac OS
 Not supports in Firefox and IE */

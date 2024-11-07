@@ -1,0 +1,6 @@
+@use '../../scss/variables/colors.module.scss' as colors;
+
+.footer {
+  background-color: colors.$black;
+  padding: 10px;
+}

@@ -1,9 +1,14 @@
-import React from 'react'
+import { Input } from 'antd';
+import classes from './Search.module.scss';
 
 const Search = () => {
   return (
-    <div>Search</div>
-  )
-}
+    <Input.Search
+      size='large'
+      className={classes.search}
+      placeholder='Напишите город/адрес или название апартаментов'
+    />
+  );
+};
 
-export default Search
+export default Search;

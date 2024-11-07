@@ -1,0 +1,43 @@
+@use "../../scss/variables/colors.module.scss" as colors;
+@use "../../scss//constants.scss" as mixins;
+
+.head{
+    background-color: colors.$black;
+    padding: 10px 0;
+    color: #ffffff;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 100;
+
+    ul{
+        margin-bottom: 0;
+    }
+
+    &_navbar{
+        @include mixins.setFlex(space-between, center);
+        h1{
+            margin-bottom: 0;
+        }
+    }
+
+    &_menu{
+        @include mixins.setFlex(space-between);
+        width: 50%;
+    }
+
+    &_item{
+        @include mixins.setLineHover(div);
+        font-size: 14px;
+
+        span{
+            line-height: 20px;
+            display: inline-block;
+        }
+    }
+}
+
+.icon{
+    font-size: 16px;
+}
+
