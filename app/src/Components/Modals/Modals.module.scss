@@ -1,0 +1,15 @@
+@use "../../scss/constants.scss" as mixins;
+@use "../../scss/variables/colors.module.scss" as colors;
+
+.signup{
+    &_body{
+        margin: 20px;
+    }
+
+    &_form{
+        padding: 20px;
+        border: 1px solid colors.$borderColor;
+        border-radius: 20px;
+    }
+}
+

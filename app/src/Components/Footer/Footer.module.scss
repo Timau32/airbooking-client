@@ -1,6 +1,82 @@
 @use '../../scss/variables/colors.module.scss' as colors;
+@use '../../scss/constants.scss' as mixins;
 
 .footer {
   background-color: colors.$black;
-  padding: 10px;
+  padding: 30px;
+  padding-top: 50px;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #ffffff80;
+  }
+
+  &_item {
+    width: 22%;
+
+    &:first-child {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &_container {
+    div {
+      color: #fff;
+    }
+  }
+
+  &_links {
+    @include mixins.setFlex(flex-start, start, column);
+
+    a {
+      color: #fff;
+      margin-bottom: 20px;
+      display: inline-block;
+      @include mixins.setLineHover(div);
+
+      p {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &_icons {
+    margin-top: 20px;
+  }
+
+  &_divider {
+    margin: 20px 0;
+    border-color: #ffffff0d;
+  }
+
+  &_icon {
+    padding: 10px;
+    border-radius: 50%;
+    background-color: #252525;
+    margin-right: 10px;
+  }
+
+  &_reserved {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    background-color: #252525;
+    text-align: center;
+    width: 100%;
+
+    div {
+      color: #ffffff80;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.size {
+  font-size: 18px;
+  cursor: pointer;
+  color: #fff;
 }
