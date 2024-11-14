@@ -1,0 +1,13 @@
+# Docker Compose файл для серверной среды React приложения
+
+version: '3.8'
+
+services:
+  react-app-server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.server
+    ports:
+      - "9003:3000"
+    environment:
+      - NODE_ENV=production
