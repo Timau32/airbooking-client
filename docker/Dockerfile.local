@@ -1,0 +1,20 @@
+# Dockerfile для React приложения (локальная среда)
+
+# Используем базовый образ Node.js
+FROM node:16
+
+# Установка рабочей директории
+WORKDIR /app
+
+# Копируем package.json и package-lock.json для установки зависимостей
+COPY app/package.json app/package-lock.json ./
+
+# Устанавливаем зависимости
+RUN npm install
+
+# Копируем весь код приложения
+COPY app ./
+
+# Запускаем приложение
+EXPOSE 3000
+CMD ["npm", "start"]
