@@ -102,7 +102,7 @@ const Footer = () => {
       <div className={classes.footer_reserved}>
         <Container>
           <Typography.Paragraph>
-            © 2011—2024 Airbooking. All all rights reserved by{' '}
+            © 2011—2024 Airbooking. All rights reserved by{' '}
             <Typography.Link href='/'>airbooking.com</Typography.Link> & created by {" "}
             <Typography.Link href='/'>codexstudio</Typography.Link>
           </Typography.Paragraph>
