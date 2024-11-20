@@ -1,19 +1,37 @@
+import { ConfigProvider } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import colors from './scss/variables/colors.module.scss';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+  // <React.StrictMode>
+  <ConfigProvider
+    theme={{
+      token: {
+        colorPrimary: colors.primary100,
+        colorBgTextActive: colors.hover100,
+        colorBgTextHover: colors.hover100,
+        colorFillAlter: colors.hover100,
+        // colorBgElevated: colors.verylightgrey,
+        colorBgLayout: colors.verylightgrey,
+      },
+      components: {
+        Tabs: {
+          colorBgContainer: '#fff',
+          colorBgTextActive: colors.verylightgrey,
+          colorBgTextHover: colors.verylightgrey,
+          colorFillAlter: colors.verylightgrey,
+        },
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+        // Input: {
+        //   inputFontSizeLG: 17,
+        // },
+      },
+    }}
+  >
+    <App />
+  </ConfigProvider>
+  /* </React.StrictMode> */
+);

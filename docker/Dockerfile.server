@@ -1,0 +1,23 @@
+# Dockerfile для React приложения (серверная среда)
+
+# Этап 1: Сборка React приложения
+FROM node:16 AS build
+
+# Установка рабочей директории
+WORKDIR /app
+
+# Копируем package.json и package-lock.json для установки зависимостей
+COPY app/package.json app/package-lock.json ./
+
+# Устанавливаем зависимости (только необходимые для продакшена)
+RUN npm install --production
+
+# Копируем весь код приложения
+COPY app ./
+
+# Собираем приложение
+RUN npm run build
+
+# Запускаем приложение
+EXPOSE 3000
+CMD ["npm", "start"]

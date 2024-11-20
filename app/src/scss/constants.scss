@@ -1,0 +1,28 @@
+@mixin setFlex($justify, $align: start, $direction: row) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-direction: $direction;
+}
+
+@mixin setLineHover($element) {
+  transition: 0.3s all linear;
+  cursor: pointer;
+
+  #{$element} {
+    background-color: tomato;
+    width: 0;
+    height: 3px;
+    border-radius: 5px;
+    margin-left: auto;
+    transition: 0.3s all linear;
+  }
+
+  &:hover {
+    #{$element} {
+      margin-left: 0;
+      margin-right: auto;
+      width: 100%;
+    }
+  }
+}

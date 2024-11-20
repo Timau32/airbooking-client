@@ -1,0 +1,68 @@
+$primary100: #7f56d8;
+$hover100: #f7f1fe;
+$hover200: #fcfaff;
+$black: #1c1c1c;
+
+$verylightgrey: #f9f9f9;
+$verylightgreyopaicity: #f9f9f982;
+$hovergrey: #f0f0ef;
+$textcolor: #84818a;
+$textcolor2: #64748b;
+$descriptioncolor: #a7a7a7;
+$darkertext: #67748a;
+$borderColor: #e7e7e7;
+$clickedCheckbox: #f7d152;
+
+$statusNew: #4f89f7;
+$statusProgress: #f2cb8f;
+$statusResolved: #73c035;
+
+$success: #52cc74;
+$error: #e14d4d;
+
+$word: #3770c3;
+$pdf: #f15742;
+$jpeg: #59ace0;
+$png: #fccb09;
+$gif: #f26a6a;
+$powerPoint: #bf3513;
+$excel: #087e40;
+$youtube: #FF0000;
+
+$changed: #fed0c4;
+$red: #ff5522;
+$mobileMenu: #001529;
+
+:export {
+  primary100: $primary100;
+  hover100: $hover100;
+  hover200: $hover200;
+
+  verylightgrey: $verylightgrey;
+  verylightgreyopaicity: $verylightgreyopaicity;
+  hovergrey: $hovergrey;
+  textcolor: $textcolor;
+  textcolor2: $textcolor2;
+  darkertext: $darkertext;
+  borderColor: $borderColor;
+  clickedCheckbox: $clickedCheckbox;
+
+  statusNew: $statusNew;
+  statusProgress: $statusProgress;
+  statusResolved: $statusResolved;
+
+  word: $word;
+  pdf: $pdf;
+  jpeg: $jpeg;
+  png: $png;
+  gif: $gif;
+  powerPoint: $powerPoint;
+  excel: $excel;
+
+  changed: $changed;
+  red: $red;
+
+  success: $success;
+  error: $error;
+  black: $black;
+}

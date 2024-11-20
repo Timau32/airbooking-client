@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { message } from 'antd';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { getCookie } from './helpers/getCookie';
+import Cart from './routes/Cart/Cart';
+import Home from './routes/Home/Home';
+import Main from './routes/Main/Main';
+import Support from './routes/Support/Support';
+import './scss/app.scss';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Main />}>
+          <Route element={<Home />} path='/' />
+          <Route element={<Support />} path='/support' />
+          <Route
+            element={
+              <Protected>
+                <Cart />
+              </Protected>
+            }
+            path='/cart'
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
+
+const Protected = ({ children }: any) => {
+  const accessToken = getCookie('auth-token');
+  console.log('protected')
+
+  if (!accessToken) {
+    message.error('Сперва войдите чтобы увидеть избранные апартаменты');
+    return <Navigate to='/' />;
+  } 
+
+  return children;
+};
 
 export default App;

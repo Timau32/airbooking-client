@@ -1,0 +1,120 @@
+@use '../../scss/variables/colors.module.scss' as colors;
+@use '../../scss/constants.scss' as mixins;
+@use '../../scss/variables/responsives.module.scss' as views;
+
+.head {
+  background-color: colors.$black;
+  padding: 10px 0;
+  color: #ffffff;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 100;
+
+  ul {
+    margin-bottom: 0;
+  }
+
+  &_navbar {
+    @include mixins.setFlex(space-between, center);
+    h1 {
+      margin-bottom: 0;
+    }
+  }
+
+  &_menu {
+    @include mixins.setFlex(space-between);
+    width: 50%;
+  }
+
+  &_item {
+    color: #ffffff;
+    @include mixins.setLineHover(div);
+    font-size: 14px;
+
+    a,
+    span {
+      color: #ffffff;
+      line-height: 20px;
+      display: inline-block;
+    }
+  }
+
+  &_burgerMenu {
+    display: none;
+    cursor: pointer;
+  }
+
+  .mobile_menu {
+    position: fixed;
+    padding-top: 34px;
+    background-color: colors.$mobileMenu;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: none;
+    z-index: 3;
+  }
+
+  .mobile_menu.opened {
+    display: block;
+  }
+
+  .mobile_close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: colors.$error;
+    cursor: pointer;
+  }
+
+  &_category{
+    padding: 0 30px;
+    margin-top: 10px;
+
+    div[class='slick-track']{
+      display: flex;
+      align-items: center;
+    }
+
+    &_item{
+      color: #fff;
+      padding: 0 10px;
+      text-align: center;
+      width: 100%;
+      // transform: translateY(-50%);
+    }
+  }
+
+  &_divider{
+    margin: 0;
+    border-color: #333131;
+  }
+}
+
+
+
+.icon {
+  font-size: 16px;
+}
+
+.logo {
+  width: 100px;
+  height: 60px;
+  object-fit: cover;
+}
+
+@media (max-width: views.$mobile) {
+  .logo {
+    width: 80px;
+    height: 40px;
+  }
+
+  .head_burgerMenu {
+    display: block;
+  }
+
+  .head_menu {
+    display: none;
+  }
+}

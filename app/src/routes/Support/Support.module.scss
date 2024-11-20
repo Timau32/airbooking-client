@@ -1,0 +1,19 @@
+@use "../../scss/variables/colors.module.scss" as colors;
+
+.section{
+    margin: 50px 0px;
+
+    h1{
+        text-align: center;
+    }
+}
+
+.form{
+    max-width: 100%;
+    padding: 30px;
+    border-radius: 30px;
+    width: 700px;
+    margin: 0 auto;
+    border: 1px solid colors.$borderColor;
+    background-color: colors.$hover200;
+}
