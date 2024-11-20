@@ -1,5 +1,6 @@
 @use '../../scss/variables/colors.module.scss' as colors;
 @use '../../scss/constants.scss' as mixins;
+@use '../../scss/variables/responsives.module.scss' as views;
 
 .footer {
   background-color: colors.$black;
@@ -21,6 +22,12 @@
     &:first-child {
       display: flex;
       align-items: center;
+    }
+
+    img{
+      width: 100px;
+      height: 40px;
+      object-fit: cover;
     }
   }
 
@@ -79,4 +86,16 @@
   font-size: 18px;
   cursor: pointer;
   color: #fff;
+}
+
+
+@media (max-width: views.$mobile) {
+  .footer_container{
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer_item{
+    width: 100%;
+  }
 }

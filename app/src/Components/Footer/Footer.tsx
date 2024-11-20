@@ -1,7 +1,8 @@
+import { GooglePlusOutlined, TwitterOutlined, WhatsAppOutlined, YoutubeOutlined } from '@ant-design/icons';
 import { Divider, Flex, Typography } from 'antd';
 import Container from '../Container/Container';
+import logo from '../../assets/img/logo.png';
 import classes from './Footer.module.scss';
-import { GooglePlusOutlined, TwitterOutlined, WhatsAppOutlined, YoutubeOutlined } from '@ant-design/icons';
 
 const Footer = () => {
   return (
@@ -10,7 +11,7 @@ const Footer = () => {
         <Container>
           <Flex className={classes.footer_container} justify='space-between'>
             <div className={classes.footer_item}>
-              <Typography.Title> Logo</Typography.Title>
+              <img src={logo} alt="Logo" />
             </div>
             <div className={classes.footer_item}>
               <Typography.Title level={4}>Гостям</Typography.Title>

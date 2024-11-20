@@ -34,6 +34,10 @@ Not supports in Firefox and IE */
 /* set button(top and bottom of the scrollbar) */
 *::-webkit-scrollbar-button {display:none}
 
+html {
+  scroll-behavior: smooth;
+}
+
 .ant-modal-content {
   padding: 0 !important;
 

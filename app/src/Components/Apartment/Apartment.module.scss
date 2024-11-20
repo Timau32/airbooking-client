@@ -1,22 +1,19 @@
-@use '../../scss/variables/responsives.module.scss' as views;
-
-.section {
-  width: 100%;
-  margin: 60px 0;
-}
-
-.search {
-  &_align {
-    text-align: center;
-    width: 700px;
-    max-width: 100%;
-    margin: auto;
-  }
-}
-
 .latest {
   &_apartments {
     margin-top: 20px;
+  }
+
+  &_like{
+    position: absolute;
+    z-index: 2;
+    top: 20px;
+    right: 20px;
+    color: #2b2b2b;
+    padding: 10px;
+    background-color: #c4c4c4cc;
+    border-radius: 50%;
+    font-size: 17px;
+    transition: 0.3s all linear;
   }
 
   &_item {
@@ -73,45 +70,8 @@
   }
 }
 
-.text_center {
-  text-align: center;
-}
-
-.cities {
-  row-gap: 20px;
-  flex-wrap: wrap;
-
-  &_results{
-    position: absolute;
-    z-index: 2;
-    top: 10px;
-    right: 10px;
-    background-color: #7a7a7ab1;
-    color: #ebebeb;
-    border-radius: 20px;
-    font-size: 13px;
-    padding: 5px 10px;
-  }
-
+@media (max-width: 700px) {
   .latest_item {
-    width: calc(25% - 20px);
-    padding: 0px;
-    margin-right: 20px;
-
-    &:nth-child(4n) {
-      margin-right: 0;
-    }
-  }
-}
-
-
-@media (max-width: views.$mobile) {
-  .latest_item{
     height: 200px;
-  }
-
-  .cities .latest_item{
-    height: 200px;
-    width: 45%;
   }
 }

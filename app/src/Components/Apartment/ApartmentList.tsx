@@ -1,3 +1,4 @@
+import views from '../../scss/variables/responsives.module.scss';
 import { Carousel } from 'antd';
 
 type Props = {
@@ -6,8 +7,18 @@ type Props = {
 };
 
 const ApartmentList = ({ children, isInfinite = false }: Props) => {
+  const { width } = document.documentElement.getBoundingClientRect();
+
   return (
-    <Carousel dots={false} draggable slidesToShow={3} infinite={isInfinite} slidesToScroll={2}>
+    <Carousel
+      dots={false}
+      draggable
+      slidesToShow={width > Number(views.mobile) ? 3 : 2}
+      infinite={isInfinite}
+      slidesToScroll={2}
+      centerMode
+      initialSlide={2}
+    >
       {children}
     </Carousel>
   );

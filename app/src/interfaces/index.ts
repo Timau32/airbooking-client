@@ -1,2 +1,3 @@
 import IUser from './IUser';
-export type { IUser };
+import IApartment from './IApartment';
+export type { IUser, IApartment };
