@@ -1,3 +1,5 @@
 import IUser from './IUser';
 import IApartment from './IApartment';
-export type { IUser, IApartment };
+import ILocations from './ILocations';
+
+export type { IUser, IApartment, ILocations };

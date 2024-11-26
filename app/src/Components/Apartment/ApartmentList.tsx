@@ -7,15 +7,23 @@ type Props = {
 };
 
 const ApartmentList = ({ children, isInfinite = false }: Props) => {
-  const { width } = document.documentElement.getBoundingClientRect();
 
   return (
     <Carousel
       dots={false}
       draggable
-      slidesToShow={width > Number(views.mobile) ? 3 : 2}
+      slidesToShow={3}
+      responsive={[
+        {breakpoint: Number(views.mobile),
+          settings: {
+            slidesToScroll: 1,
+            slidesToShow: 2,
+            centerMode: false
+          }
+        }
+      ]}
       infinite={isInfinite}
-      slidesToScroll={2}
+      slidesToScroll={1}
       centerMode
       initialSlide={2}
     >

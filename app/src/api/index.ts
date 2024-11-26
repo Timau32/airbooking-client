@@ -1,12 +1,11 @@
 // @ts-nocheck
-import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+import { getCookie, setCookie } from '../helpers/getCookie';
+import { IApartment, ILocations } from '../interfaces';
 
 const authed = axios.create({
-  baseURL:
-    window.REACT_APP_SERVER_API !== 'REPLACE_REACT_APP_SERVER_API'
-      ? window.REACT_APP_SERVER_API
-      : process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
+  baseURL: process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
   withCredentials: true,
 });
 
@@ -20,10 +19,7 @@ const signUp = (payload: FormData) =>
 const signIn = (payload: { identifier: string; password: string }) => authed.post('/auth/login/', payload);
 
 const requestTemplate = axios.create({
-  baseURL:
-    window.REACT_APP_SERVER_API !== 'REPLACE_REACT_APP_SERVER_API'
-      ? window.REACT_APP_SERVER_API
-      : process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
+  baseURL: process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
   withCredentials: true,
 });
 
@@ -63,10 +59,34 @@ authed.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   return config;
 });
 
+interface IItemsResponse<T> {
+  results: T;
+  prev: string | null;
+  next: string | null;
+  count: number;
+}
+
+const getApartments = () => requestTemplate.get<IItemsResponse<IApartment[]>>('/properties/all/');
+const getApartmentDetail = (slug: string) => requestTemplate.get(`/properties/all/${slug}/`);
+const getFavorites = () => requestTemplate.get('/favorites/');
+
+const getCities = () =>
+  requestTemplate.get<IItemsResponse<ILocations.ICities[]>>('/locations/regions/coral-region/cities/');
+
+const getContries = () => requestTemplate.get<IItemsResponse<ILocations.IContries[]>>('/locations/');
+const getRegions = (country_slug: string) =>
+  requestTemplate.get<IItemsResponse<ILocations.IRegions[]>>(`/locations/countries/${country_slug}/regions/`);
+
 const api = {
   refreshToken,
   signIn,
   signUp,
+  getApartments,
+  getApartmentDetail,
+  getFavorites,
+  getCities,
+  getContries,
+  getRegions,
 };
 
 export default api;

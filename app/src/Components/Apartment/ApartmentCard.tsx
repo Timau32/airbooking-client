@@ -20,7 +20,13 @@ const ApartmentCard = ({ apartment }: Props) => {
     <div className={classes.latest_item}>
       <div className={classes.latest_body}>
         <HeartOutlined onClick={onHeartClick} className={classes.latest_like} />
-        <img src={apartment.img} alt={apartment.title} />
+        <img
+          src={
+            apartment.images[0] ||
+            'https://asiamountains.net/assets/cache_image/assets/lib/resized/431/1600x1200_0x0_d0b.jpg'
+          }
+          alt={apartment.title}
+        />
         <Typography.Paragraph className={classes.latest_title}>{apartment.title}</Typography.Paragraph>
       </div>
     </div>
