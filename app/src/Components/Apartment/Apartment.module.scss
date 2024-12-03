@@ -1,9 +1,11 @@
+@use '../../scss/variables/colors.module.scss' as colors;
+
 .latest {
   &_apartments {
     margin-top: 20px;
   }
 
-  &_like{
+  &_like {
     position: absolute;
     z-index: 2;
     top: 20px;
@@ -14,6 +16,10 @@
     border-radius: 50%;
     font-size: 17px;
     transition: 0.3s all linear;
+
+    &:hover {
+      color: red;
+    }
   }
 
   &_item {
@@ -21,12 +27,32 @@
     width: 100%;
     height: 300px;
 
-    img {
+    .img {
+      div[class='slick-list'],
+      div[class='slick-track'],
+      div:not([class]) {
+        height: 100%;
+        overflow: hidden;
+
+        img {
+          height: 100%;
+          width: 100%;
+          transition: 0.3s all linear;
+          object-fit: cover;
+        }
+      }
+
+      button[class='slick-arrow slick-prev']::after {
+        border-color: colors.$primary100;
+      }
+      button[class='slick-arrow slick-next']::after {
+        border-color: colors.$primary100;
+      }
+
       width: 100%;
       height: 100%;
-      object-fit: cover;
       display: block;
-      transition: 0.3s all linear;
+      position: absolute;
     }
   }
 
@@ -49,6 +75,7 @@
     position: relative;
     user-select: none;
     cursor: pointer;
+    overflow: hidden;
 
     &:hover {
       img {
@@ -57,12 +84,13 @@
     }
 
     &::before {
+      pointer-events: none;
       content: '';
       display: block;
       position: absolute;
       width: 100%;
       height: 100%;
-      z-index: 2;
+      z-index: 1;
       -webkit-box-shadow: inset -1px -58px 44px -28px rgba(0, 0, 0, 0.75);
       -moz-box-shadow: inset -1px -58px 44px -28px rgba(0, 0, 0, 0.75);
       box-shadow: inset -1px -58px 44px -28px rgba(0, 0, 0, 0.75);

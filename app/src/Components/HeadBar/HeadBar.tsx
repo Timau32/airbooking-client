@@ -1,52 +1,24 @@
 import {
   CloseCircleOutlined,
-  CloudOutlined,
-  CoffeeOutlined,
-  DatabaseOutlined,
-  EnvironmentOutlined,
   HeartOutlined,
-  HomeOutlined,
-  HourglassOutlined,
-  KeyOutlined,
   MenuOutlined,
-  MergeOutlined,
   MessageOutlined,
-  MoonOutlined,
-  NodeIndexOutlined,
   PhoneOutlined,
   SearchOutlined,
-  ShopOutlined,
-  UserOutlined,
-  WindowsOutlined
+  UserOutlined
 } from '@ant-design/icons';
-import { Carousel, Divider, Menu, type MenuProps } from 'antd';
+import { Menu, type MenuProps } from 'antd';
 import classNames from 'classnames';
 import { Suspense, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, SigninModal, SignupModal } from '../';
-import logo from '../../assets/img/logo.png';
-import views from '../../scss/variables/responsives.module.scss';
+import logo from '../../assets/img/logo-white.png';
 import classes from './HeadBar.module.scss';
 
 type MenuItem = Required<MenuProps>['items'][number];
 const menuExcludeItems = ['signin', 'languages', 'phone'];
 
-const categories = [
-  { id: 1, label: 'Города мечты', icon: <HomeOutlined /> },
-  { id: 2, label: 'Квартиры', icon: <KeyOutlined /> },
-  { id: 3, label: 'Дома', icon: <HomeOutlined /> },
-  { id: 4, label: 'Комнаты', icon: <DatabaseOutlined /> },
-  { id: 5, label: 'Номера', icon: <WindowsOutlined /> },
-  { id: 6, label: 'Особняки', icon: <CloudOutlined /> },
-  { id: 7, label: 'Домики', icon: <MergeOutlined /> },
-  { id: 8, label: 'Юрты', icon: <HeartOutlined /> },
-  { id: 9, label: 'Дома отдыха', icon: <ShopOutlined /> },
-  { id: 10, label: 'Рядом озеро', icon: <EnvironmentOutlined /> },
-  { id: 11, label: 'Зоны отдыха', icon: <MoonOutlined /> },
-  { id: 12, label: 'Исторические места', icon: <HourglassOutlined /> },
-  { id: 13, label: 'Уникальные', icon: <NodeIndexOutlined /> },
-  { id: 14, label: 'Апартаменты', icon: <CoffeeOutlined /> },
-];
+
 
 const HeadBar = () => {
   const [isSigninOpen, setIsSigninOpen] = useState<boolean>(false);
@@ -150,36 +122,7 @@ const HeadBar = () => {
           <CloseCircleOutlined onClick={onMobileMenuClose} className={classes.mobile_close} />
           <Menu items={items} theme='dark' onClick={onClick} />
         </div>
-        <Divider className={classes.head_divider} />
-
-        <Container>
-          <Carousel
-            slidesToShow={7}
-            slidesToScroll={4}
-            slide='10'
-            className={classes.head_category}
-            responsive={[
-              {
-                breakpoint: Number(views.mobile),
-                settings: {
-                  slidesToScroll: 2,
-                  slidesToShow: 2,
-                },
-              },
-            ]}
-            dots={false}
-            infinite={false}
-            draggable
-            arrows
-            initialSlide={2}
-          >
-            {categories.map(({ id, label, icon }) => (
-              <div key={`category-${id}`} className={classes.head_category_item}>
-                {icon} {label}
-              </div>
-            ))}
-          </Carousel>
-        </Container>
+       
       </header>
 
       {isSigninOpen && (

@@ -1,3 +1,5 @@
+import IImage from "./IImage";
+
 export default interface IApartment {
   id: number;
   slug: string;
@@ -10,7 +12,7 @@ export default interface IApartment {
   address: string;
   city: string;
   amenities: string[];
-  images: string[];
+  images: IImage[];
   locations: Location[];
   is_approved: boolean;
   created_at: string;

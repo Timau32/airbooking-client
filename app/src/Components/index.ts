@@ -6,5 +6,16 @@ import Search from './Search/Search';
 import Container from './Container/Container';
 import SigninModal from './Modals/Signin/SigninModal';
 import SignupModal from './Modals/Signup/SignupModal';
+import Spinner from './Spinner/Spinner';
 
-export { HeadBar, Footer, ApartmentCard, ApartmentList, Search, Container, SigninModal, SignupModal };
+export {
+  HeadBar,
+  Footer,
+  ApartmentCard,
+  ApartmentList,
+  Search,
+  Container,
+  SigninModal,
+  SignupModal,
+  Spinner,
+};

@@ -1,37 +1,40 @@
 import { ConfigProvider } from 'antd';
-import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 import App from './App';
 import colors from './scss/variables/colors.module.scss';
+import store from './store';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   // <React.StrictMode>
-  <ConfigProvider
-    theme={{
-      token: {
-        colorPrimary: colors.primary100,
-        colorBgTextActive: colors.hover100,
-        colorBgTextHover: colors.hover100,
-        colorFillAlter: colors.hover100,
-        // colorBgElevated: colors.verylightgrey,
-        colorBgLayout: colors.verylightgrey,
-      },
-      components: {
-        Tabs: {
-          colorBgContainer: '#fff',
-          colorBgTextActive: colors.verylightgrey,
-          colorBgTextHover: colors.verylightgrey,
-          colorFillAlter: colors.verylightgrey,
+  <Provider store={store}>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: colors.primary100,
+          colorBgTextActive: colors.hover100,
+          colorBgTextHover: colors.hover100,
+          colorFillAlter: colors.hover100,
+          // colorBgElevated: colors.verylightgrey,
+          colorBgLayout: colors.verylightgrey,
         },
+        components: {
+          Tabs: {
+            colorBgContainer: '#fff',
+            colorBgTextActive: colors.verylightgrey,
+            colorBgTextHover: colors.verylightgrey,
+            colorFillAlter: colors.verylightgrey,
+          },
 
-        // Input: {
-        //   inputFontSizeLG: 17,
-        // },
-      },
-    }}
-  >
-    <App />
-  </ConfigProvider>
+          // Input: {
+          //   inputFontSizeLG: 17,
+          // },
+        },
+      }}
+    >
+      <App />
+    </ConfigProvider>
+  </Provider>
   /* </React.StrictMode> */
 );

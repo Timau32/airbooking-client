@@ -67,11 +67,12 @@ interface IItemsResponse<T> {
 }
 
 const getApartments = () => requestTemplate.get<IItemsResponse<IApartment[]>>('/properties/all/');
-const getApartmentDetail = (slug: string) => requestTemplate.get(`/properties/all/${slug}/`);
-const getFavorites = () => requestTemplate.get('/favorites/');
+const getApartmentDetail = (slug: string) => requestTemplate.get<IApartment>(`/properties/${slug}/`);
+const getFavorites = () => authed.get('/favorites/');
+const getPopular = () => requestTemplate.get<IItemsResponse<IApartment[]>>('/properties/popular/');
 
 const getCities = () =>
-  requestTemplate.get<IItemsResponse<ILocations.ICities[]>>('/locations/regions/coral-region/cities/');
+  requestTemplate.get<IItemsResponse<ILocations.ICities[]>>('/locations/cities/');
 
 const getContries = () => requestTemplate.get<IItemsResponse<ILocations.IContries[]>>('/locations/');
 const getRegions = (country_slug: string) =>
@@ -87,6 +88,7 @@ const api = {
   getCities,
   getContries,
   getRegions,
+  getPopular,
 };
 
 export default api;

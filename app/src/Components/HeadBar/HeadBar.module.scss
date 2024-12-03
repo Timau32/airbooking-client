@@ -67,29 +67,6 @@
     color: colors.$error;
     cursor: pointer;
   }
-
-  &_category{
-    padding: 0 30px;
-    margin-top: 10px;
-
-    div[class='slick-track']{
-      display: flex;
-      align-items: center;
-    }
-
-    &_item{
-      color: #fff;
-      padding: 0 10px;
-      text-align: center;
-      width: 100%;
-      // transform: translateY(-50%);
-    }
-  }
-
-  &_divider{
-    margin: 0;
-    border-color: #333131;
-  }
 }
 
 

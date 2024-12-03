@@ -53,9 +53,9 @@ const SignupModal = ({ onCancel, isOpen, onSigninOpen }: Props) => {
   };
 
   const onChangeForm = () => {
-    const { confirm, password, email, first_name, last_name, phone } = form.getFieldsValue();
+    const { confirm, password, first_name, last_name, phone } = form.getFieldsValue();
 
-    const isAbleToSignup = password === confirm && confirm && password && first_name && last_name && (email || phone);
+    const isAbleToSignup = password === confirm && confirm && password && first_name && last_name &&  phone;
     if (!!form.getFieldsError().filter(({ errors }) => errors.length).length || !Boolean(isAbleToSignup)) {
       setIsDisable(true);
       return;
@@ -91,13 +91,13 @@ const SignupModal = ({ onCancel, isOpen, onSigninOpen }: Props) => {
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item label='Телефонный номер' name={'phone'}>
+        <Form.Item required label='Телефонный номер' name={'phone'}>
           <Input placeholder='Введите телефонный номер' />
         </Form.Item>
 
-        <Form.Item label='Email' name={'email'}>
+        {/* <Form.Item label='Email' name={'email'}>
           <Input placeholder='Введите Email' />
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item required label='Пароль' name={'password'}>
           <Input.Password placeholder='Введите пароль' />

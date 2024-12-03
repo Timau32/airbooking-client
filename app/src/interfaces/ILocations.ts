@@ -10,6 +10,7 @@ declare namespace ILocations {
     id: string;
     name: string;
     slug: string;
+    image: string;
     region: string;
     latitude: any;
     longitude: any;
