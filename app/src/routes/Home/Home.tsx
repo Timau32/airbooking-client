@@ -21,6 +21,7 @@ import {
 } from '@ant-design/icons';
 import { ILocations } from '../../interfaces';
 import LoadingComponents from '../../Components/Spinner/LoadingComponents';
+import { pushUps } from '../../helpers/pushUps';
 
 // const lattestMocks = [
 //   {
@@ -144,10 +145,7 @@ const Home = () => {
       setHomeData({ popular, holidays, cities });
     } catch (err) {
       console.log(err);
-      message.error(
-        'Что то пошло не так. Не получилось загрузить данные. Проверьте подключение к интернету и попробуйте заново.',
-        6
-      );
+      message.error(pushUps.DEFAULT_FETCH_ERROR, 6);
     } finally {
       setIsLoading(false);
     }

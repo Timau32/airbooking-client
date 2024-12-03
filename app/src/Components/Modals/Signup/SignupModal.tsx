@@ -12,7 +12,7 @@ type Props = {
 type FormValues = {
   first_name: string;
   last_name: string;
-  phone: string;
+  phone_number: string;
   email: string;
   password: string;
   confirm: string;
@@ -53,9 +53,9 @@ const SignupModal = ({ onCancel, isOpen, onSigninOpen }: Props) => {
   };
 
   const onChangeForm = () => {
-    const { confirm, password, first_name, last_name, phone } = form.getFieldsValue();
+    const { confirm, password, first_name, last_name, phone_number } = form.getFieldsValue();
 
-    const isAbleToSignup = password === confirm && confirm && password && first_name && last_name &&  phone;
+    const isAbleToSignup = password === confirm && confirm && password && first_name && last_name &&  phone_number;
     if (!!form.getFieldsError().filter(({ errors }) => errors.length).length || !Boolean(isAbleToSignup)) {
       setIsDisable(true);
       return;
@@ -91,7 +91,7 @@ const SignupModal = ({ onCancel, isOpen, onSigninOpen }: Props) => {
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item required label='Телефонный номер' name={'phone'}>
+        <Form.Item required label='Телефонный номер' name={'phone_number'}>
           <Input placeholder='Введите телефонный номер' />
         </Form.Item>
 

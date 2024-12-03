@@ -5,7 +5,7 @@ import {
   MessageOutlined,
   PhoneOutlined,
   SearchOutlined,
-  UserOutlined
+  UserOutlined,
 } from '@ant-design/icons';
 import { Menu, type MenuProps } from 'antd';
 import classNames from 'classnames';
@@ -13,17 +13,20 @@ import { Suspense, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, SigninModal, SignupModal } from '../';
 import logo from '../../assets/img/logo-white.png';
+import { deleteCookie } from '../../helpers/getCookie';
+import { useAppDispatch, useAppSelector } from '../../store/hook';
+import { setIsLogined } from '../../store/reducers/apartmentSlices';
 import classes from './HeadBar.module.scss';
 
 type MenuItem = Required<MenuProps>['items'][number];
 const menuExcludeItems = ['signin', 'languages', 'phone'];
 
-
-
 const HeadBar = () => {
   const [isSigninOpen, setIsSigninOpen] = useState<boolean>(false);
   const [isSignupOpen, setIsSignupOpen] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const { isLogined } = useAppSelector((state) => state.apartment);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const onSigninCancel = () => setIsSigninOpen(false);
@@ -36,6 +39,12 @@ const HeadBar = () => {
   const onMobileMenuClose = () => setIsMobileMenuOpen(false);
 
   const scrollTop = () => window.scrollTo({ top: 0 });
+  const logout = () => {
+    navigate('/');
+    deleteCookie('auth-token');
+    deleteCookie('refresh');
+    dispatch(setIsLogined(false));
+  };
 
   const items: MenuItem[] = [
     {
@@ -50,9 +59,9 @@ const HeadBar = () => {
     },
     {
       key: 'singin',
-      label: 'Войти',
+      label: isLogined ? 'Выйти' : 'Войти',
       icon: <UserOutlined className={classes.icon} />,
-      onClick: onSigninOpen,
+      onClick: isLogined ? logout : onSigninOpen,
     },
 
     {
@@ -97,8 +106,8 @@ const HeadBar = () => {
                 <div className='line'></div>
               </li>
               <li className={classes.head_item}>
-                <span onClick={onSigninOpen}>
-                  <UserOutlined className={classes.icon} /> Войти
+                <span onClick={isLogined ? logout : onSigninOpen}>
+                  <UserOutlined className={classes.icon} /> {isLogined ? 'Выйти' : 'Войти'}
                 </span>
                 <div className='line'></div>
               </li>
@@ -122,7 +131,6 @@ const HeadBar = () => {
           <CloseCircleOutlined onClick={onMobileMenuClose} className={classes.mobile_close} />
           <Menu items={items} theme='dark' onClick={onClick} />
         </div>
-       
       </header>
 
       {isSigninOpen && (

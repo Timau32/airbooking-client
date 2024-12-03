@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../../helpers/getCookie';
 import { IApartment } from '../../interfaces';
 import classes from './Apartment.module.scss';
+import { useAppDispatch } from '../../store/hook';
+import { setSelectedApartment } from '../../store/reducers/apartmentSlices';
 
 type Props = {
   apartment: IApartment;
@@ -12,6 +14,7 @@ type Props = {
 };
 
 const ApartmentCard = ({ apartment, onItemClick }: Props) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const onHeartClick = (event: MouseEvent) => {
     event.stopPropagation();
@@ -20,7 +23,12 @@ const ApartmentCard = ({ apartment, onItemClick }: Props) => {
   };
 
   const onClick = () => {
-    onItemClick ? onItemClick(apartment.slug) : navigate(`/apartments/${apartment.slug}`);
+    if (onItemClick) {
+      onItemClick(apartment.slug);
+    } else {
+      dispatch(setSelectedApartment(apartment));
+      navigate(`/apartments/${apartment.slug}`);
+    }
   };
 
   return (
@@ -33,6 +41,7 @@ const ApartmentCard = ({ apartment, onItemClick }: Props) => {
           {apartment.images.map((img) => (
             <img
               onClick={onClick}
+              key={img.id + img.image}
               src={
                 img?.image ||
                 'https://asiamountains.net/assets/cache_image/assets/lib/resized/431/1600x1200_0x0_d0b.jpg'

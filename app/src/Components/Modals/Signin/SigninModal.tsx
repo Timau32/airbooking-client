@@ -1,8 +1,11 @@
 import { Divider, Form, Input, message, Modal, Typography } from 'antd';
 import axios, { AxiosError } from 'axios';
-import api from '../../../api';
-import classes from '../Modals.module.scss';
 import { useState } from 'react';
+import api from '../../../api';
+import { setCookie } from '../../../helpers/getCookie';
+import { useAppDispatch } from '../../../store/hook';
+import { setIsLogined } from '../../../store/reducers/apartmentSlices';
+import classes from '../Modals.module.scss';
 
 type Props = {
   onCancel: () => void;
@@ -18,13 +21,17 @@ type FormValues = {
 const SigninModal = ({ onCancel, isOpen, onSingupOpen }: Props) => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  const dispatch = useAppDispatch();
 
   const onFinish = async (values: FormValues) => {
     try {
       setLoading(true);
       const response = await api.signIn(values);
-      console.log(response);
+      setCookie('auth-token', response.data.access, 1);
+      setCookie('refresh', response.data.refresh, 1);
       onCancel();
+      message.success('Вы успешно вошли в аккаунт');
+      dispatch(setIsLogined(true));
     } catch (err) {
       const errResponse = err as any | AxiosError;
       const isServerError = axios.isAxiosError(err);
