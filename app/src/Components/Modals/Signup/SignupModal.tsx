@@ -1,5 +1,7 @@
-import { Divider, Form, Input, Modal, Typography } from 'antd';
+import { Col, Divider, Form, Input, message, Modal, Row, Typography } from 'antd';
 import classes from '../Modals.module.scss';
+import { useState } from 'react';
+import api from '../../../api';
 
 type Props = {
   onCancel: () => void;
@@ -8,23 +10,58 @@ type Props = {
 };
 
 type FormValues = {
-  full_name: string;
-  phone: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
   email: string;
   password: string;
   confirm: string;
 };
 
 const SignupModal = ({ onCancel, isOpen, onSigninOpen }: Props) => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<FormValues>();
+  const [isDisable, setIsDisable] = useState(true);
+  const [isLaoding, setIsLoading] = useState(false);
 
-  const onFinish = (values: FormValues) => {
-    onCancel();
+  const onFinish = async (values: FormValues) => {
+    try {
+      setIsLoading(true);
+      const { confirm, ...personalData } = values;
+      const formData = new FormData();
+
+      for (const key in personalData) {
+        formData.append(key, personalData[key as keyof typeof personalData]);
+      }
+
+      formData.append('username', `${Date.now()}`);
+      const response = await api.signUp(formData);
+      onCancel();
+      onSigninOpen();
+
+      message.success('Ваш аккаунт успешно создано');
+    } catch (err) {
+      message.error('Не получается зарегистрироваться');
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const onNavigate = () => {
     onCancel();
     onSigninOpen();
+  };
+
+  const onChangeForm = () => {
+    const { confirm, password, first_name, last_name, phone_number } = form.getFieldsValue();
+
+    const isAbleToSignup = password === confirm && confirm && password && first_name && last_name &&  phone_number;
+    if (!!form.getFieldsError().filter(({ errors }) => errors.length).length || !Boolean(isAbleToSignup)) {
+      setIsDisable(true);
+      return;
+    }
+
+    setIsDisable(false);
   };
 
   return (
@@ -36,23 +73,51 @@ const SignupModal = ({ onCancel, isOpen, onSigninOpen }: Props) => {
       classNames={{ body: classes.signup_body }}
       title='Регистрация'
       centered
+      okButtonProps={{
+        disabled: isDisable,
+      }}
+      confirmLoading={isLaoding}
     >
-      <Form className={classes.signin_form} form={form} layout='vertical' onFinish={onFinish}>
-        <Form.Item required label='ФИО' name={'full_name'}>
-          <Input placeholder='Введите ФИО' />
-        </Form.Item>
-        <Form.Item label='Телефонный номер' name={'phone'}>
+      <Form onChange={onChangeForm} className={classes.signin_form} form={form} layout='vertical' onFinish={onFinish}>
+        <Row justify={'space-between'}>
+          <Col span={11}>
+            <Form.Item required label='Имя' name={'first_name'}>
+              <Input placeholder='Введите Имя' />
+            </Form.Item>
+          </Col>
+          <Col span={11}>
+            <Form.Item required label='Фамилия' name={'last_name'}>
+              <Input placeholder='Введите Фамилию' />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Form.Item required label='Телефонный номер' name={'phone_number'}>
           <Input placeholder='Введите телефонный номер' />
         </Form.Item>
 
-        <Form.Item label='Email' name={'email'}>
+        {/* <Form.Item label='Email' name={'email'}>
           <Input placeholder='Введите Email' />
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item required label='Пароль' name={'password'}>
           <Input.Password placeholder='Введите пароль' />
         </Form.Item>
-        <Form.Item required label='Подтвердите пароль' name={'confirm'}>
+        <Form.Item
+          required
+          rules={[
+            { required: true, message: 'Пожалуйста подтвердите пароль' },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('Пароли не совпадают'));
+              },
+            }),
+          ]}
+          label='Подтвердите пароль'
+          name={'confirm'}
+        >
           <Input.Password placeholder='Введите пароль' />
         </Form.Item>
         <Divider />

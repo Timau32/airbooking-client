@@ -1,57 +1,32 @@
 import {
   CloseCircleOutlined,
-  CloudOutlined,
-  CoffeeOutlined,
-  DatabaseOutlined,
-  EnvironmentOutlined,
   HeartOutlined,
-  HomeOutlined,
-  HourglassOutlined,
-  KeyOutlined,
   MenuOutlined,
-  MergeOutlined,
   MessageOutlined,
-  MoonOutlined,
-  NodeIndexOutlined,
   PhoneOutlined,
   SearchOutlined,
-  ShopOutlined,
   UserOutlined,
-  WindowsOutlined
 } from '@ant-design/icons';
-import { Carousel, Divider, Menu, type MenuProps } from 'antd';
+import { Menu, type MenuProps } from 'antd';
 import classNames from 'classnames';
 import { Suspense, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, SigninModal, SignupModal } from '../';
-import logo from '../../assets/img/logo.png';
-import views from '../../scss/variables/responsives.module.scss';
+import logo from '../../assets/img/logo-white.png';
+import { deleteCookie } from '../../helpers/getCookie';
+import { useAppDispatch, useAppSelector } from '../../store/hook';
+import { setIsLogined } from '../../store/reducers/apartmentSlices';
 import classes from './HeadBar.module.scss';
 
 type MenuItem = Required<MenuProps>['items'][number];
 const menuExcludeItems = ['signin', 'languages', 'phone'];
 
-const categories = [
-  { id: 1, label: 'Города мечты', icon: <HomeOutlined /> },
-  { id: 2, label: 'Квартиры', icon: <KeyOutlined /> },
-  { id: 3, label: 'Дома', icon: <HomeOutlined /> },
-  { id: 4, label: 'Комнаты', icon: <DatabaseOutlined /> },
-  { id: 5, label: 'Номера', icon: <WindowsOutlined /> },
-  { id: 6, label: 'Особняки', icon: <CloudOutlined /> },
-  { id: 7, label: 'Домики', icon: <MergeOutlined /> },
-  { id: 8, label: 'Юрты', icon: <HeartOutlined /> },
-  { id: 9, label: 'Дома отдыха', icon: <ShopOutlined /> },
-  { id: 10, label: 'Рядом озеро', icon: <EnvironmentOutlined /> },
-  { id: 11, label: 'Зоны отдыха', icon: <MoonOutlined /> },
-  { id: 12, label: 'Исторические места', icon: <HourglassOutlined /> },
-  { id: 13, label: 'Уникальные', icon: <NodeIndexOutlined /> },
-  { id: 14, label: 'Апартаменты', icon: <CoffeeOutlined /> },
-];
-
 const HeadBar = () => {
   const [isSigninOpen, setIsSigninOpen] = useState<boolean>(false);
   const [isSignupOpen, setIsSignupOpen] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const { isLogined } = useAppSelector((state) => state.apartment);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const onSigninCancel = () => setIsSigninOpen(false);
@@ -64,6 +39,12 @@ const HeadBar = () => {
   const onMobileMenuClose = () => setIsMobileMenuOpen(false);
 
   const scrollTop = () => window.scrollTo({ top: 0 });
+  const logout = () => {
+    navigate('/');
+    deleteCookie('auth-token');
+    deleteCookie('refresh');
+    dispatch(setIsLogined(false));
+  };
 
   const items: MenuItem[] = [
     {
@@ -78,9 +59,9 @@ const HeadBar = () => {
     },
     {
       key: 'singin',
-      label: 'Войти',
+      label: isLogined ? 'Выйти' : 'Войти',
       icon: <UserOutlined className={classes.icon} />,
-      onClick: onSigninOpen,
+      onClick: isLogined ? logout : onSigninOpen,
     },
 
     {
@@ -125,8 +106,8 @@ const HeadBar = () => {
                 <div className='line'></div>
               </li>
               <li className={classes.head_item}>
-                <span onClick={onSigninOpen}>
-                  <UserOutlined className={classes.icon} /> Войти
+                <span onClick={isLogined ? logout : onSigninOpen}>
+                  <UserOutlined className={classes.icon} /> {isLogined ? 'Выйти' : 'Войти'}
                 </span>
                 <div className='line'></div>
               </li>
@@ -150,36 +131,6 @@ const HeadBar = () => {
           <CloseCircleOutlined onClick={onMobileMenuClose} className={classes.mobile_close} />
           <Menu items={items} theme='dark' onClick={onClick} />
         </div>
-        <Divider className={classes.head_divider} />
-
-        <Container>
-          <Carousel
-            slidesToShow={7}
-            slidesToScroll={4}
-            slide='10'
-            className={classes.head_category}
-            responsive={[
-              {
-                breakpoint: Number(views.mobile),
-                settings: {
-                  slidesToScroll: 2,
-                  slidesToShow: 2,
-                },
-              },
-            ]}
-            dots={false}
-            infinite={false}
-            draggable
-            arrows
-            initialSlide={2}
-          >
-            {categories.map(({ id, label, icon }) => (
-              <div key={`category-${id}`} className={classes.head_category_item}>
-                {icon} {label}
-              </div>
-            ))}
-          </Carousel>
-        </Container>
       </header>
 
       {isSigninOpen && (
@@ -192,6 +143,20 @@ const HeadBar = () => {
           <SignupModal isOpen={isSignupOpen} onCancel={onSignupCancel} onSigninOpen={onSigninOpen} />
         </Suspense>
       )}
+
+      <div className={classes.mobile_bottomBar}>
+        <div className={classes.mobile_bottomBar_actions}>
+            <Link to='/' onClick={scrollTop} className={classes.mobile_bottomBar_item}>
+              <SearchOutlined className={classes.mobile_bottomBar_icon} /> <span>Поиск</span>
+            </Link>
+            <Link to='/cart'className={classes.mobile_bottomBar_item}>
+              <HeartOutlined className={classes.mobile_bottomBar_icon} /> <span>Избранное</span>
+            </Link>
+          <div className={classes.mobile_bottomBar_item} onClick={isLogined ? logout : onSigninOpen}>
+            <UserOutlined className={classes.mobile_bottomBar_icon} /> <span>{isLogined ? 'Выйти' : 'Войти'}</span>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

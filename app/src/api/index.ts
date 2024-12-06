@@ -1,31 +1,33 @@
 // @ts-nocheck
-import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+import { getCookie, setCookie } from '../helpers/getCookie';
+import { IApartment, IBooking, IFavorites, ILocations } from '../interfaces';
 
 const authed = axios.create({
-  baseURL:
-    window.REACT_APP_SERVER_API !== 'REPLACE_REACT_APP_SERVER_API'
-      ? window.REACT_APP_SERVER_API
-      : process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
+  baseURL: process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
   withCredentials: true,
 });
 
-const refreshToken = (payload: { refresh: string }) => authed.post('/auth/token/refresh/', payload);
+const requestTemplate = axios.create({
+  baseURL: process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
+  withCredentials: true,
+});
+
+interface ILoginResponse {
+  refresh: string;
+  access: string;
+}
+
+const refreshToken = (payload: { refresh: string }) => requestTemplate.post('/auth/token/refresh/', payload);
 
 const signUp = (payload: FormData) =>
-  authed.post('/auth/register/', payload, {
+  requestTemplate.post('/auth/register/', payload, {
     headers: { Accept: 'application/json', 'Content-Type': 'multipart/form-data' },
   });
 
-const signIn = (payload: { identifier: string; password: string }) => authed.post('/auth/login/', payload);
-
-const requestTemplate = axios.create({
-  baseURL:
-    window.REACT_APP_SERVER_API !== 'REPLACE_REACT_APP_SERVER_API'
-      ? window.REACT_APP_SERVER_API
-      : process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
-  withCredentials: true,
-});
+const signIn = (payload: { identifier: string; password: string }) =>
+  requestTemplate.post<ILoginResponse>('/auth/login/', payload);
 
 authed.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   let accessToken = getCookie('auth-token');
@@ -40,17 +42,17 @@ authed.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
     const curTime = new Date().getTime();
 
     if (expTime && expTime - curTime <= 50000) {
-      const refresh = getCookie('refresh_token');
-      if (refresh_token) {
+      const refresh = getCookie('refresh');
+      if (refresh) {
         try {
           const freshTokens = await refreshToken({ refresh });
-          setCookie('auth-token', freshTokens.data.access_token, 1);
-          freshTokens.data.refresh_token && setCookie('refresh_token', freshTokens.data.refresh_token, 1);
-          accessToken = freshTokens.data.access_token;
+          setCookie('auth-token', freshTokens.data.access, 1);
+          freshTokens.data.refresh && setCookie('refresh', freshTokens.data.refresh, 1);
+          accessToken = freshTokens.data.access;
         } catch (error) {
           Promise.reject('Error refreshing tokens');
           deleteCookie('auth-token');
-          deleteCookie('refresh_token');
+          deleteCookie('refresh');
           window.location.href = `/`;
         }
       }
@@ -63,10 +65,50 @@ authed.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   return config;
 });
 
+interface IItemsResponse<T> {
+  results: T;
+  prev: string | null;
+  next: string | null;
+  count: number;
+}
+
+interface IBookingPayload {
+  property: string; // Уникальный идентификатор или название объекта
+  start_date: string; // Дата начала в формате YYYY-MM-DD
+  end_date: string; // Дата окончания в формате YYYY-MM-DD
+  start_time: string; // Время начала в формате HH:mm
+  end_time: string; // Время окончания в формате HH:mm
+}
+
+const getApartments = () => authed.get<IItemsResponse<IApartment[]>>('/properties/all/');
+const getApartmentDetail = (slug: string) => authed.get<IApartment>(`/properties/${slug}/`);
+const getFavorites = () => authed.get<IItemsResponse<IFavorites[]>>('/favorites/');
+const setFavorite = (slug: string) => authed.post(`/favorites/property/${slug}/`);
+const removeFavorite = (slug: string) => authed.delete(`/favorites/property/${slug}/delete/`);
+const getPopular = () => authed.get<IItemsResponse<IApartment[]>>('/properties/popular/');
+
+const getCities = () => authed.get<IItemsResponse<ILocations.ICities[]>>('/locations/cities/');
+
+const getContries = () => authed.get<IItemsResponse<ILocations.IContries[]>>('/locations/');
+const getRegions = (country_slug: string) =>
+  requestTemplate.get<IItemsResponse<ILocations.IRegions[]>>(`/locations/countries/${country_slug}/regions/`);
+
+const bookingApartment = (payload: IBookingPayload) => authed.post<IBooking>(`/bookings/`, payload);
+
 const api = {
   refreshToken,
   signIn,
   signUp,
+  getApartments,
+  getApartmentDetail,
+  getFavorites,
+  getCities,
+  getContries,
+  getRegions,
+  getPopular,
+  setFavorite,
+  removeFavorite,
+  bookingApartment,
 };
 
 export default api;

@@ -6,6 +6,7 @@ import Home from './routes/Home/Home';
 import Main from './routes/Main/Main';
 import Support from './routes/Support/Support';
 import './scss/app.scss';
+import Apartment from './routes/Apartment/Apartment';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route element={<Main />}>
           <Route element={<Home />} path='/' />
           <Route element={<Support />} path='/support' />
+          <Route element={<Apartment />} path='/apartments/:slug' />
           <Route
             element={
               <Protected>
@@ -30,7 +32,6 @@ function App() {
 
 const Protected = ({ children }: any) => {
   const accessToken = getCookie('auth-token');
-  console.log('protected')
 
   if (!accessToken) {
     message.error('Сперва войдите чтобы увидеть избранные апартаменты');

@@ -1,7 +1,7 @@
 import { GooglePlusOutlined, TwitterOutlined, WhatsAppOutlined, YoutubeOutlined } from '@ant-design/icons';
 import { Divider, Flex, Typography } from 'antd';
 import Container from '../Container/Container';
-import logo from '../../assets/img/logo.png';
+import logo from '../../assets/img/logo-white.png';
 import classes from './Footer.module.scss';
 
 const Footer = () => {
