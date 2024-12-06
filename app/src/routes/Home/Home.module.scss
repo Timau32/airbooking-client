@@ -153,5 +153,15 @@
 
   .cities {
     justify-content: space-between;
+
+    &_results{
+      font-size: 12px;
+    }
+  }
+
+  .search_align{
+    h1{
+      font-size: 21px;
+    }
   }
 }

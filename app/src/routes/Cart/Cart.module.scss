@@ -1,0 +1,25 @@
+@use '../../scss/variables/responsives.module.scss' as views;
+@use '../../scss/variables/colors.module.scss' as colors;
+
+.cart {
+  margin: 40px 0;
+}
+
+.like{
+  cursor: pointer;
+}
+
+.link{
+  cursor: pointer;
+  transition: 0.3s all linear;
+  
+  &:hover{
+    color: colors.$primary100;
+  }
+}
+
+@media (max-width: views.$mobile) {
+  .title{
+    font-size: 21px !important;
+  }
+}

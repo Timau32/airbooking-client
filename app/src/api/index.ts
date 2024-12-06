@@ -2,31 +2,32 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { getCookie, setCookie } from '../helpers/getCookie';
-import { IApartment, ILocations } from '../interfaces';
+import { IApartment, IFavorites, ILocations } from '../interfaces';
 
 const authed = axios.create({
   baseURL: process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
   withCredentials: true,
 });
 
-interface ILoginResponse  {
-  refresh: string;
-  access: string
-}
-
-const refreshToken = (payload: { refresh: string }) => authed.post('/auth/token/refresh/', payload);
-
-const signUp = (payload: FormData) =>
-  authed.post('/auth/register/', payload, {
-    headers: { Accept: 'application/json', 'Content-Type': 'multipart/form-data' },
-  });
-
-const signIn = (payload: { identifier: string; password: string }) => authed.post<ILoginResponse>('/auth/login/', payload);
-
 const requestTemplate = axios.create({
   baseURL: process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
   withCredentials: true,
 });
+
+interface ILoginResponse {
+  refresh: string;
+  access: string;
+}
+
+const refreshToken = (payload: { refresh: string }) => requestTemplate.post('/auth/token/refresh/', payload);
+
+const signUp = (payload: FormData) =>
+  requestTemplate.post('/auth/register/', payload, {
+    headers: { Accept: 'application/json', 'Content-Type': 'multipart/form-data' },
+  });
+
+const signIn = (payload: { identifier: string; password: string }) =>
+  requestTemplate.post<ILoginResponse>('/auth/login/', payload);
 
 authed.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   let accessToken = getCookie('auth-token');
@@ -64,6 +65,7 @@ authed.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   return config;
 });
 
+
 interface IItemsResponse<T> {
   results: T;
   prev: string | null;
@@ -71,15 +73,16 @@ interface IItemsResponse<T> {
   count: number;
 }
 
-const getApartments = () => requestTemplate.get<IItemsResponse<IApartment[]>>('/properties/all/');
-const getApartmentDetail = (slug: string) => requestTemplate.get<IApartment>(`/properties/${slug}/`);
-const getFavorites = () => authed.get('/favorites/');
-const getPopular = () => requestTemplate.get<IItemsResponse<IApartment[]>>('/properties/popular/');
+const getApartments = () => authed.get<IItemsResponse<IApartment[]>>('/properties/all/');
+const getApartmentDetail = (slug: string) => authed.get<IApartment>(`/properties/${slug}/`);
+const getFavorites = () => authed.get<IItemsResponse<IFavorites[]>>('/favorites/');
+const setFavorite = (slug: string) => authed.post(`/favorites/property/${slug}/`);
+const removeFavorite = (slug: string) => authed.delete(`/favorites/property/${slug}/delete/`);
+const getPopular = () => authed.get<IItemsResponse<IApartment[]>>('/properties/popular/');
 
-const getCities = () =>
-  requestTemplate.get<IItemsResponse<ILocations.ICities[]>>('/locations/cities/');
+const getCities = () => authed.get<IItemsResponse<ILocations.ICities[]>>('/locations/cities/');
 
-const getContries = () => requestTemplate.get<IItemsResponse<ILocations.IContries[]>>('/locations/');
+const getContries = () => authed.get<IItemsResponse<ILocations.IContries[]>>('/locations/');
 const getRegions = (country_slug: string) =>
   requestTemplate.get<IItemsResponse<ILocations.IRegions[]>>(`/locations/countries/${country_slug}/regions/`);
 
@@ -94,6 +97,8 @@ const api = {
   getContries,
   getRegions,
   getPopular,
+  setFavorite,
+  removeFavorite,
 };
 
 export default api;

@@ -32,7 +32,6 @@ function App() {
 
 const Protected = ({ children }: any) => {
   const accessToken = getCookie('auth-token');
-  console.log('protected')
 
   if (!accessToken) {
     message.error('Сперва войдите чтобы увидеть избранные апартаменты');

@@ -19,16 +19,16 @@
 
   &_mainSlide {
     margin-bottom: 20px;
-    max-height: 320px;
+    height: 320px;
 
     div[class='slick-list'] {
-      max-height: 320px;
+      height: 320px;
     }
 
     div:not([class]){
       display: flex;
       justify-content: center;
-      max-height: 320px;
+      height: 320px;
     }
 
     img {
@@ -44,6 +44,7 @@
   }
 
   &_dotsSlide {
+    margin-bottom: 20px;
     div[class*='slick-slide'] {
       img {
         border: 1px solid transparent;

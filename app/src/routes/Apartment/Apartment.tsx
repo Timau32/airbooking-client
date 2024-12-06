@@ -41,10 +41,11 @@ const Apartment = () => {
     }
   };
 
-  const onHeartClick = (event: MouseEvent) => {
+  const onHeartClick = async (event: MouseEvent) => {
     event.stopPropagation();
     const token = getCookie('auth-token');
     if (!token) message.warning('Ввойдите в аккаунт чтобы добавить в избранное');
+    const response = await api.setFavorite(selectedApartment?.slug!);
   };
 
   const onBookingFinish = (values: { count: string; date: string }) => {
@@ -96,6 +97,7 @@ const Apartment = () => {
                   swipeToSlide={true}
                   focusOnSelect={true}
                   infinite={false}
+                  draggable
                   className={classes.apartment_dotsSlide}
                 >
                   {selectedApartment?.images.map((img) => (
@@ -109,7 +111,14 @@ const Apartment = () => {
                 </Carousel>
               </div>
 
-              <div className={classes.apartment_description}>{selectedApartment?.description}</div>
+              <Typography.Title level={4}>
+                  Детальная информация 
+              </Typography.Title>
+
+              <div
+                className={classes.apartment_description}
+                dangerouslySetInnerHTML={{ __html: selectedApartment?.description || '' }}
+              />
             </div>
             <div className={classes.apartment_booking}>
               <div className={classes.sticky}>

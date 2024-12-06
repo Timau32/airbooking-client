@@ -143,6 +143,20 @@ const HeadBar = () => {
           <SignupModal isOpen={isSignupOpen} onCancel={onSignupCancel} onSigninOpen={onSigninOpen} />
         </Suspense>
       )}
+
+      <div className={classes.mobile_bottomBar}>
+        <div className={classes.mobile_bottomBar_actions}>
+            <Link to='/' onClick={scrollTop} className={classes.mobile_bottomBar_item}>
+              <SearchOutlined className={classes.mobile_bottomBar_icon} /> <span>Поиск</span>
+            </Link>
+            <Link to='/cart'className={classes.mobile_bottomBar_item}>
+              <HeartOutlined className={classes.mobile_bottomBar_icon} /> <span>Избранное</span>
+            </Link>
+          <div className={classes.mobile_bottomBar_item} onClick={isLogined ? logout : onSigninOpen}>
+            <UserOutlined className={classes.mobile_bottomBar_icon} /> <span>{isLogined ? 'Выйти' : 'Войти'}</span>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

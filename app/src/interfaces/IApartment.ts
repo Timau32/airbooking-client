@@ -1,4 +1,6 @@
-import IImage from "./IImage";
+import IAmenities from './IAmenities';
+import IImage from './IImage';
+import ILocations from './ILocations';
 
 export default interface IApartment {
   id: number;
@@ -11,16 +13,13 @@ export default interface IApartment {
   property_type: string;
   address: string;
   city: string;
-  amenities: string[];
+  amenities: IAmenities[];
   images: IImage[];
-  locations: Location[];
+  locations: ILocations.Location[];
   is_approved: boolean;
   created_at: string;
   updated_at: string;
+  is_favorite: boolean | null;
 }
 
-interface Location {
-  id: number;
-  latitude: number;
-  longitude: number;
-}
+

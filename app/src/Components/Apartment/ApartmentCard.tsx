@@ -7,6 +7,8 @@ import { IApartment } from '../../interfaces';
 import classes from './Apartment.module.scss';
 import { useAppDispatch } from '../../store/hook';
 import { setSelectedApartment } from '../../store/reducers/apartmentSlices';
+import api from '../../api';
+import axios from 'axios';
 
 type Props = {
   apartment: IApartment;
@@ -16,10 +18,20 @@ type Props = {
 const ApartmentCard = ({ apartment, onItemClick }: Props) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const onHeartClick = (event: MouseEvent) => {
+
+  const onHeartClick = async (event: MouseEvent) => {
+   try{
     event.stopPropagation();
     const token = getCookie('auth-token');
     if (!token) message.warning('Ввойдите в аккаунт чтобы добавить в избранное');
+    const response = await api.setFavorite(apartment.slug);
+    message.success('Объект успешно добавлен в избранное');
+   }catch(Err){
+    const errResponse = Err as any;
+    if(axios.isAxiosError(errResponse) && errResponse.response?.data?.message){
+      message.error(errResponse.response.data.message);
+    }
+   }
   };
 
   const onClick = () => {
