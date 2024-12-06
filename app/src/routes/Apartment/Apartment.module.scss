@@ -1,5 +1,9 @@
 @use '../../scss/variables/colors.module.scss' as colors;
 
+:root{
+  --slide-length: 1;
+}
+
 .apartment {
   margin: 30px 0;
 
@@ -8,7 +12,7 @@
   }
 
   &_details {
-    width: 75%;
+    width: 70%;
     margin-right: 20px;
 
     img {
@@ -19,16 +23,17 @@
 
   &_mainSlide {
     margin-bottom: 20px;
-    height: 320px;
+    height: 400px;
+    background-color: #fff;
 
     div[class='slick-list'] {
-      height: 320px;
+      height: 400px;
     }
 
     div:not([class]){
       display: flex;
       justify-content: center;
-      height: 320px;
+      height: 400px;
     }
 
     img {
@@ -45,6 +50,9 @@
 
   &_dotsSlide {
     margin-bottom: 20px;
+    width: calc(var(--slide-length) * 160px);
+    user-select: none;
+
     div[class*='slick-slide'] {
       img {
         border: 1px solid transparent;
@@ -63,7 +71,9 @@
 
     .item {
       padding: 0 10px;
-      height: 150px;
+      height: 100px !important;
+      width: 150px !important;
+      cursor: pointer;
     }
   }
 
@@ -75,7 +85,7 @@
   }
 
   &_booking {
-    width: 30%;
+    width: 40%;
   }
 
   &_actions {

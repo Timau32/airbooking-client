@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { getCookie, setCookie } from '../helpers/getCookie';
-import { IApartment, IFavorites, ILocations } from '../interfaces';
+import { IApartment, IBooking, IFavorites, ILocations } from '../interfaces';
 
 const authed = axios.create({
   baseURL: process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
@@ -46,9 +46,9 @@ authed.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
       if (refresh) {
         try {
           const freshTokens = await refreshToken({ refresh });
-          setCookie('auth-token', freshTokens.data.access_token, 1);
+          setCookie('auth-token', freshTokens.data.access, 1);
           freshTokens.data.refresh && setCookie('refresh', freshTokens.data.refresh, 1);
-          accessToken = freshTokens.data.access_token;
+          accessToken = freshTokens.data.access;
         } catch (error) {
           Promise.reject('Error refreshing tokens');
           deleteCookie('auth-token');
@@ -65,12 +65,19 @@ authed.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   return config;
 });
 
-
 interface IItemsResponse<T> {
   results: T;
   prev: string | null;
   next: string | null;
   count: number;
+}
+
+interface IBookingPayload {
+  property: string; // Уникальный идентификатор или название объекта
+  start_date: string; // Дата начала в формате YYYY-MM-DD
+  end_date: string; // Дата окончания в формате YYYY-MM-DD
+  start_time: string; // Время начала в формате HH:mm
+  end_time: string; // Время окончания в формате HH:mm
 }
 
 const getApartments = () => authed.get<IItemsResponse<IApartment[]>>('/properties/all/');
@@ -86,6 +93,8 @@ const getContries = () => authed.get<IItemsResponse<ILocations.IContries[]>>('/l
 const getRegions = (country_slug: string) =>
   requestTemplate.get<IItemsResponse<ILocations.IRegions[]>>(`/locations/countries/${country_slug}/regions/`);
 
+const bookingApartment = (payload: IBookingPayload) => authed.post<IBooking>(`/bookings/`, payload);
+
 const api = {
   refreshToken,
   signIn,
@@ -99,6 +108,7 @@ const api = {
   getPopular,
   setFavorite,
   removeFavorite,
+  bookingApartment,
 };
 
 export default api;
