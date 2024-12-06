@@ -46,16 +46,23 @@ const HeadBar = () => {
     dispatch(setIsLogined(false));
   };
 
+  const onClick: MenuProps['onClick'] = (event) => {
+    if (menuExcludeItems.includes(event.key)) return;
+    navigate(event.key);
+  };
+
   const items: MenuItem[] = [
     {
       key: '/support',
       label: 'Помощь',
       icon: <MessageOutlined className={classes.icon} />,
+      onClick,
     },
     {
       key: '/cart',
       label: 'Избранное',
       icon: <HeartOutlined className={classes.icon} />,
+      onClick,
     },
     {
       key: 'singin',
@@ -78,11 +85,6 @@ const HeadBar = () => {
       onClick: () => (window.location.href = 'tel:+996772619105'),
     },
   ];
-
-  const onClick: MenuProps['onClick'] = (event) => {
-    if (menuExcludeItems.includes(event.key)) return;
-    navigate(event.key);
-  };
 
   return (
     <>
@@ -129,7 +131,7 @@ const HeadBar = () => {
         </Container>
         <div className={classNames(classes.mobile_menu, isMobileMenuOpen ? classes.opened : undefined)}>
           <CloseCircleOutlined onClick={onMobileMenuClose} className={classes.mobile_close} />
-          <Menu items={items} theme='dark' onClick={onClick} />
+          <Menu items={items} theme='dark' />
         </div>
       </header>
 
@@ -146,12 +148,12 @@ const HeadBar = () => {
 
       <div className={classes.mobile_bottomBar}>
         <div className={classes.mobile_bottomBar_actions}>
-            <Link to='/' onClick={scrollTop} className={classes.mobile_bottomBar_item}>
-              <SearchOutlined className={classes.mobile_bottomBar_icon} /> <span>Поиск</span>
-            </Link>
-            <Link to='/cart'className={classes.mobile_bottomBar_item}>
-              <HeartOutlined className={classes.mobile_bottomBar_icon} /> <span>Избранное</span>
-            </Link>
+          <Link to='/' onClick={scrollTop} className={classes.mobile_bottomBar_item}>
+            <SearchOutlined className={classes.mobile_bottomBar_icon} /> <span>Поиск</span>
+          </Link>
+          <Link to='/cart' className={classes.mobile_bottomBar_item}>
+            <HeartOutlined className={classes.mobile_bottomBar_icon} /> <span>Избранное</span>
+          </Link>
           <div className={classes.mobile_bottomBar_item} onClick={isLogined ? logout : onSigninOpen}>
             <UserOutlined className={classes.mobile_bottomBar_icon} /> <span>{isLogined ? 'Выйти' : 'Войти'}</span>
           </div>
