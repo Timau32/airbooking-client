@@ -1,6 +1,6 @@
 @use '../../scss/variables/colors.module.scss' as colors;
 
-:root{
+:root {
   --slide-length: 1;
 }
 
@@ -23,6 +23,7 @@
 
   &_mainSlide {
     margin-bottom: 20px;
+    border-radius: 20px;
     height: 400px;
     background-color: #fff;
 
@@ -30,7 +31,7 @@
       height: 400px;
     }
 
-    div:not([class]){
+    div:not([class]) {
       display: flex;
       justify-content: center;
       height: 400px;
@@ -120,5 +121,21 @@
     top: 85px;
     right: 0;
     z-index: 3;
+  }
+}
+
+.reviews {
+  margin-top: 20px;
+
+  &_list{
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 10px 20px;
+  }
+
+  &_description {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
