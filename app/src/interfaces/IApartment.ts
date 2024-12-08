@@ -1,6 +1,7 @@
 import IAmenities from './IAmenities';
 import IImage from './IImage';
 import ILocations from './ILocations';
+import IReviews from './IReviews';
 
 export default interface IApartment {
   id: number;
@@ -20,6 +21,5 @@ export default interface IApartment {
   created_at: string;
   updated_at: string;
   is_favorite: boolean | null;
+  reviews: IReviews[];
 }
-
-

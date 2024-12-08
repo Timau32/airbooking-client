@@ -1,5 +1,19 @@
-import { CopyOutlined, HeartOutlined, ShareAltOutlined } from '@ant-design/icons';
-import { Button, Carousel, DatePicker, Dropdown, Form, Image, Input, message, Tooltip, Typography } from 'antd';
+import { CopyOutlined, HeartOutlined, ShareAltOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  Avatar,
+  Button,
+  Carousel,
+  DatePicker,
+  Dropdown,
+  Form,
+  Image,
+  Input,
+  List,
+  message,
+  Rate,
+  Tooltip,
+  Typography,
+} from 'antd';
 import { RangePickerProps } from 'antd/es/date-picker';
 import dayjs from 'dayjs';
 import { CSSProperties, MouseEvent, useEffect, useRef, useState } from 'react';
@@ -157,6 +171,36 @@ const Apartment = () => {
                 className={classes.apartment_description}
                 dangerouslySetInnerHTML={{ __html: selectedApartment?.description || '' }}
               />
+
+              <div className={classes.reviews}>
+                <Typography.Title level={4}> Комментарии </Typography.Title>
+                <List
+                  className={classes.reviews_list}
+                  itemLayout='horizontal'
+                  dataSource={selectedApartment?.reviews}
+                  renderItem={(review) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<Avatar style={{ marginTop: '11px' }} icon={<UserOutlined />} />}
+                        title={
+                          <div className={classes.reviews_description}>
+                            <strong>{review.full_name || 'Аноним'} </strong>
+                            <div>
+                              <Rate disabled value={review.rating} />
+                            </div>
+                          </div>
+                        }
+                        description={
+                          <div className={classes.reviews_description}>
+                            <p>{review.comment}</p>
+                            <small>{new Date(review.created_at).toLocaleString()}</small>
+                          </div>
+                        }
+                      />
+                    </List.Item>
+                  )}
+                />
+              </div>
             </div>
             <div className={classes.apartment_booking}>
               <div className={classes.sticky}>
