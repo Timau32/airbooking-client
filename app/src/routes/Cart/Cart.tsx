@@ -33,7 +33,7 @@ const Cart = () => {
       console.log(response);
 
       setDataSource(
-        response.data.results.map((fav) => ({
+        response.data.map((fav) => ({
           ...fav,
           image: 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
           loading: false,
@@ -41,6 +41,7 @@ const Cart = () => {
       );
     } catch (Err) {
       message.error(pushUps.DEFAULT_FETCH_ERROR);
+      console.log(Err);
     } finally {
       setIsLoading(false);
     }
@@ -93,7 +94,14 @@ const Cart = () => {
                 />,
               ]}
               extra={
-                <img width={272} alt='logo' src='https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png' />
+                <img
+                  className={classes.img}
+                  alt='logo'
+                  src={
+                    item.property.images[0]?.image ||
+                    'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'
+                  }
+                />
               }
             >
               <Typography.Title level={4} className={classes.link} onClick={() => onNavigateToItem(item.property.slug)}>
