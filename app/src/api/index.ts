@@ -82,12 +82,14 @@ interface IBookingPayload {
 
 const getApartments = () => authed.get<IItemsResponse<IApartment[]>>('/properties/all/');
 const getApartmentDetail = (slug: string) => authed.get<IApartment>(`/properties/${slug}/`);
-const getFavorites = () => authed.get<IItemsResponse<IFavorites[]>>('/favorites/');
+const getFavorites = () => authed.get<IFavorites[]>('/favorites/');
 const setFavorite = (slug: string) => authed.post(`/favorites/property/${slug}/`);
 const removeFavorite = (slug: string) => authed.delete(`/favorites/property/${slug}/delete/`);
 const getPopular = () => authed.get<IItemsResponse<IApartment[]>>('/properties/popular/');
 
 const getCities = () => authed.get<IItemsResponse<ILocations.ICities[]>>('/locations/cities/');
+
+const getCategories = () => authed.get('/properties/categories/');  
 
 const getContries = () => authed.get<IItemsResponse<ILocations.IContries[]>>('/locations/');
 const getRegions = (country_slug: string) =>

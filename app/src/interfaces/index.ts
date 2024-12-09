@@ -6,5 +6,6 @@ import IFavorites from './IFavorites';
 import IAmenities from './IAmenities';
 import IBooking from './IBooking';
 import IReviews from './IReviews';
+import ICategories from './iCategories';
 
-export type { IUser, IApartment, ILocations, IImage, IFavorites, IAmenities, IBooking, IReviews };
+export type { IUser, IApartment, ILocations, IImage, IFavorites, IAmenities, IBooking, IReviews, ICategories };

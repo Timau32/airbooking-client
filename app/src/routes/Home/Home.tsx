@@ -22,88 +22,8 @@ import {
 import { ILocations } from '../../interfaces';
 import LoadingComponents from '../../Components/Spinner/LoadingComponents';
 import { pushUps } from '../../helpers/pushUps';
+import imageHolder from "../../assets/img/image-holder-icon.png";
 
-// const lattestMocks = [
-//   {
-//     id: '1',
-//     title: '2x rooms around Sulaiman-too',
-//     images: ['https://avatars.mds.yandex.net/get-vertis-journal/4469561/cover.jpg_1704460151500/orig'],
-//   },
-//   {
-//     id: '2',
-//     title: '2x rooms / шикарный вид на закат',
-//     images: ['https://asiamountains.net/assets/cache_image/assets/lib/resized/857/1600x1207_0x0_d0b.jpg'],
-//   },
-//   {
-//     id: '3',
-//     title: 'Керме тоо',
-//     images: [
-//       'https://thumbs.dreamstime.com/b/%D0%B2%D0%B8%D0%B4-%D0%BD%D0%B0-%D0%B3%D0%BE%D1%80%D0%BE%D0%B4-%D0%BE%D1%88-%D0%B2%D0%BE-%D0%B2%D1%80%D0%B5%D0%BC%D1%8F-%D0%B7%D0%B0%D0%BA%D0%B0%D1%82%D0%B0-%D0%BA%D1%8B%D1%80%D0%B3%D1%8B%D0%B7%D1%81%D1%82%D0%B0%D0%BD%D0%B0-%D0%BF%D0%B0%D0%BD%D0%BE%D1%80%D0%B0%D0%BC%D0%B0-%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D0%B0-%D1%81-%D0%B3%D0%BE%D1%80%D1%8B-213463263.jpg',
-//     ],
-//   },
-//   {
-//     id: '4',
-//     title: 'С солнечным виддом',
-//     images: ['https://st-1.akipress.org/cdn-st-0/qX5/Q/820250.cb171f0603b20cf34e4930b1bfa4c6a9.jpg'],
-//   },
-//   {
-//     id: '5',
-//     title: '2x rooms Квартира',
-//     images: [
-//       'https://cf.bstatic.com/xdata/images/hotel/max1024x768/552590468.jpg?k=ba8b21bfde4a248b41e90242e79398ba6ac61f0a37886c99badf4a8ce1099f4b&o=&hp=1',
-//     ],
-//   },
-//   {
-//     id: '6',
-//     title: '2x rooms Дом с видом на гору',
-//     images: ['https://motohorek.life/wp-content/uploads/2021/09/E3EC2819-1DFF-41CC-9EF6-50E329023B2E-1024x683.jpeg'],
-//   },
-//   {
-//     id: '7',
-//     title: 'Люкс квартира',
-//     images: ['https://asiamountains.net/assets/cache_image/assets/lib/resized/431/1600x1200_0x0_d0b.jpg'],
-//   },
-// ];
-
-// const citiesMocks = [
-//   {
-//     id: 1,
-//     title: 'Иссык-Куль',
-//     images: 'https://avatars.mds.yandex.net/get-vertis-journal/4469561/cover.jpg_1704460151500/orig',
-//   },
-//   {
-//     id: 2,
-//     title: 'Далал-Абад',
-//     images: 'https://asiamountains.net/assets/cache_image/assets/lib/resized/857/1600x1207_0x0_d0b.jpg',
-//   },
-//   {
-//     id: 3,
-//     title: 'Талас',
-//     images:
-//       'https://thumbs.dreamstime.com/b/%D0%B2%D0%B8%D0%B4-%D0%BD%D0%B0-%D0%B3%D0%BE%D1%80%D0%BE%D0%B4-%D0%BE%D1%88-%D0%B2%D0%BE-%D0%B2%D1%80%D0%B5%D0%BC%D1%8F-%D0%B7%D0%B0%D0%BA%D0%B0%D1%82%D0%B0-%D0%BA%D1%8B%D1%80%D0%B3%D1%8B%D0%B7%D1%81%D1%82%D0%B0%D0%BD%D0%B0-%D0%BF%D0%B0%D0%BD%D0%BE%D1%80%D0%B0%D0%BC%D0%B0-%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D0%B0-%D1%81-%D0%B3%D0%BE%D1%80%D1%8B-213463263.jpg',
-//   },
-//   {
-//     id: 4,
-//     title: 'Ош',
-//     images: 'https://st-1.akipress.org/cdn-st-0/qX5/Q/820250.cb171f0603b20cf34e4930b1bfa4c6a9.jpg',
-//   },
-//   {
-//     id: 5,
-//     title: 'Бишкек',
-//     images:
-//       'https://cf.bstatic.com/xdata/images/hotel/max1024x768/552590468.jpg?k=ba8b21bfde4a248b41e90242e79398ba6ac61f0a37886c99badf4a8ce1099f4b&o=&hp=1',
-//   },
-//   {
-//     id: 6,
-//     title: 'Нарын',
-//     images: 'https://motohorek.life/wp-content/uploads/2021/09/E3EC2819-1DFF-41CC-9EF6-50E329023B2E-1024x683.jpeg',
-//   },
-//   {
-//     id: 7,
-//     title: 'Баткен',
-//     images: 'https://asiamountains.net/assets/cache_image/assets/lib/resized/431/1600x1200_0x0_d0b.jpg',
-//   },
-// ];
 
 const categories = [
   { id: 1, label: 'Города мечты', icon: <HomeOutlined /> },
@@ -140,6 +60,7 @@ const Home = () => {
       const holidays = (await api.getApartments()).data.results;
       const cities = (await api.getCities()).data.results;
       const popular = (await api.getPopular()).data.results;
+      // const categories = await
 
       console.log({ holidays, cities, popular });
       setHomeData({ popular, holidays, cities });
@@ -235,7 +156,7 @@ const Home = () => {
                     <p className={classes.cities_results}>
                       {new Intl.NumberFormat('de-DE').format(Math.floor(Math.random() * 10000))} вариантов
                     </p>
-                    <img src={cities.image} alt={cities.name} />
+                    <img src={cities.image || imageHolder} alt={cities.name} />
                     <Typography.Paragraph className={classes.latest_title}>{cities.name}</Typography.Paragraph>
                   </div>
                 </div>
