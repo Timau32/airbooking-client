@@ -85,6 +85,7 @@ const Apartment = () => {
         end_date: endDate.format('YYYY-MM-DD'),
         start_time: startDate.format('HH:mm'),
         end_time: endDate.format('HH:mm'),
+        number_of_guests: Number(values.count),
       };
 
       await api.bookingApartment(payload);

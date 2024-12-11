@@ -5,8 +5,8 @@ import Cart from './routes/Cart/Cart';
 import Home from './routes/Home/Home';
 import Main from './routes/Main/Main';
 import Support from './routes/Support/Support';
-import './scss/app.scss';
 import Apartment from './routes/Apartment/Apartment';
+import './scss/app.scss';
 
 function App() {
   return (
