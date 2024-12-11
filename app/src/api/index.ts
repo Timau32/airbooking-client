@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { getCookie, setCookie } from '../helpers/getCookie';
-import { IApartment, IBooking, IFavorites, ILocations } from '../interfaces';
+import { IApartment, IBooking, ICategories, IFavorites, ILocations } from '../interfaces';
 
 const authed = axios.create({
   baseURL: process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
@@ -78,6 +78,7 @@ interface IBookingPayload {
   end_date: string; // Дата окончания в формате YYYY-MM-DD
   start_time: string; // Время начала в формате HH:mm
   end_time: string; // Время окончания в формате HH:mm
+  number_of_guests: number;
 }
 
 const getApartments = () => authed.get<IItemsResponse<IApartment[]>>('/properties/all/');
@@ -89,7 +90,7 @@ const getPopular = () => authed.get<IItemsResponse<IApartment[]>>('/properties/p
 
 const getCities = () => authed.get<IItemsResponse<ILocations.ICities[]>>('/locations/cities/');
 
-const getCategories = () => authed.get('/properties/categories/');  
+const getCategories = () => authed.get<ICategories[]>('/properties/categories/');  
 
 const getContries = () => authed.get<IItemsResponse<ILocations.IContries[]>>('/locations/');
 const getRegions = (country_slug: string) =>
@@ -111,6 +112,7 @@ const api = {
   setFavorite,
   removeFavorite,
   bookingApartment,
+  getCategories,
 };
 
 export default api;

@@ -1,52 +1,26 @@
-import { ApartmentCard, ApartmentList, Container, Search } from '../../Components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Carousel, Divider, Flex, message, Typography } from 'antd';
-import classes from './Home.module.scss';
 import { useEffect, useState } from 'react';
 import api from '../../api';
-import views from '../../scss/variables/responsives.module.scss';
-import {
-  CloudOutlined,
-  CoffeeOutlined,
-  DatabaseOutlined,
-  EnvironmentOutlined,
-  HeartOutlined,
-  HomeOutlined,
-  HourglassOutlined,
-  KeyOutlined,
-  MergeOutlined,
-  MoonOutlined,
-  NodeIndexOutlined,
-  ShopOutlined,
-  WindowsOutlined,
-} from '@ant-design/icons';
-import { ILocations } from '../../interfaces';
+import imageHolder from '../../assets/img/image-holder-icon.png';
+import { ApartmentCard, ApartmentList, Container, Search } from '../../Components';
 import LoadingComponents from '../../Components/Spinner/LoadingComponents';
 import { pushUps } from '../../helpers/pushUps';
-import imageHolder from "../../assets/img/image-holder-icon.png";
-
-
-const categories = [
-  { id: 1, label: 'Города мечты', icon: <HomeOutlined /> },
-  { id: 2, label: 'Квартиры', icon: <KeyOutlined /> },
-  { id: 3, label: 'Дома', icon: <HomeOutlined /> },
-  { id: 4, label: 'Комнаты', icon: <DatabaseOutlined /> },
-  { id: 5, label: 'Номера', icon: <WindowsOutlined /> },
-  { id: 6, label: 'Особняки', icon: <CloudOutlined /> },
-  { id: 7, label: 'Домики', icon: <MergeOutlined /> },
-  { id: 8, label: 'Юрты', icon: <HeartOutlined /> },
-  { id: 9, label: 'Дома отдыха', icon: <ShopOutlined /> },
-  { id: 10, label: 'Рядом озеро', icon: <EnvironmentOutlined /> },
-  { id: 11, label: 'Зоны отдыха', icon: <MoonOutlined /> },
-  { id: 12, label: 'Исторические места', icon: <HourglassOutlined /> },
-  { id: 13, label: 'Уникальные', icon: <NodeIndexOutlined /> },
-  { id: 14, label: 'Апартаменты', icon: <CoffeeOutlined /> },
-];
+import { ICategories, ILocations } from '../../interfaces';
+import views from '../../scss/variables/responsives.module.scss';
+import classes from './Home.module.scss';
 
 const Home = () => {
-  const [homeData, setHomeData] = useState<{ popular: any[]; holidays: any[]; cities: ILocations.ICities[] }>({
+  const [homeData, setHomeData] = useState<{
+    popular: any[];
+    holidays: any[];
+    cities: ILocations.ICities[];
+    categories: ICategories[];
+  }>({
     popular: [],
     holidays: [],
     cities: [],
+    categories: [],
   });
   const [loading, setIsLoading] = useState(true);
 
@@ -60,10 +34,9 @@ const Home = () => {
       const holidays = (await api.getApartments()).data.results;
       const cities = (await api.getCities()).data.results;
       const popular = (await api.getPopular()).data.results;
-      // const categories = await
+      const categories = (await api.getCategories()).data;
 
-      console.log({ holidays, cities, popular });
-      setHomeData({ popular, holidays, cities });
+      setHomeData({ popular, holidays, cities, categories });
     } catch (err) {
       console.log(err);
       message.error(pushUps.DEFAULT_FETCH_ERROR, 6);
@@ -102,13 +75,16 @@ const Home = () => {
             arrows
             initialSlide={2}
           >
-            {categories.map(({ id, label, icon }) => (
-              <div key={`category-${id}`} className={classes.search_category_item}>
-                <span className={classes.search_category_pointer}>
-                  {icon} {label}
-                </span>
-              </div>
-            ))}
+            {homeData.categories.map(({ id, name, icon }) => {
+              console.log(icon);
+              return (
+                <div key={`category-${id}`} className={classes.search_category_item}>
+                  <span className={classes.search_category_pointer}>
+                    <FontAwesomeIcon icon={icon?.split(',') as any} /> {name}
+                  </span>
+                </div>
+              );
+            })}
           </Carousel>
         </Container>
       </section>
