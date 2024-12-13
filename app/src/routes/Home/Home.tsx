@@ -5,15 +5,16 @@ import api from '../../api';
 import imageHolder from '../../assets/img/image-holder-icon.png';
 import { ApartmentCard, ApartmentList, Container, Search } from '../../Components';
 import LoadingComponents from '../../Components/Spinner/LoadingComponents';
-import { pushUps } from '../../helpers/pushUps';
-import { ICategories, ILocations } from '../../interfaces';
+import { pushUps } from '../../helpers';
+import { IApartment, ICategories, ILocations } from '../../interfaces';
 import views from '../../scss/variables/responsives.module.scss';
 import classes from './Home.module.scss';
 
 const Home = () => {
+  const [loading, setIsLoading] = useState(true);
   const [homeData, setHomeData] = useState<{
-    popular: any[];
-    holidays: any[];
+    popular: IApartment[];
+    holidays: IApartment[];
     cities: ILocations.ICities[];
     categories: ICategories[];
   }>({
@@ -22,7 +23,6 @@ const Home = () => {
     cities: [],
     categories: [],
   });
-  const [loading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchHomeData();
@@ -76,7 +76,6 @@ const Home = () => {
             initialSlide={2}
           >
             {homeData.categories.map(({ id, name, icon }) => {
-              console.log(icon);
               return (
                 <div key={`category-${id}`} className={classes.search_category_item}>
                   <span className={classes.search_category_pointer}>
@@ -97,7 +96,11 @@ const Home = () => {
           <div className={classes.latest_apartments}>
             <ApartmentList isInfinite>
               {homeData.holidays.map((apartment) => (
-                <ApartmentCard key={`apartment-${apartment.id}`} apartment={{ ...apartment, description: '' }} />
+                <ApartmentCard
+                  setHomeData={setHomeData}
+                  key={`apartment-${apartment.id}`}
+                  apartment={{ ...apartment, description: '' }}
+                />
               ))}
             </ApartmentList>
           </div>
@@ -112,7 +115,7 @@ const Home = () => {
           <div className={classes.latest_apartments}>
             <ApartmentList>
               {homeData.popular.map((apartment) => (
-                <ApartmentCard key={`apartment-${apartment.id}`} apartment={apartment} />
+                <ApartmentCard setHomeData={setHomeData} key={`apartment-${apartment.id}`} apartment={apartment} />
               ))}
             </ApartmentList>
           </div>

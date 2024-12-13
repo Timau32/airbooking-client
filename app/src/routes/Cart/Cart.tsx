@@ -1,7 +1,7 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { Fragment, ReactNode, useEffect, useState } from 'react';
 import api from '../../api';
 import { Divider, List, message, Space, Typography } from 'antd';
-import { pushUps } from '../../helpers/pushUps';
+import { pushUps } from '../../helpers';
 import { Container } from '../../Components';
 import { IFavorites } from '../../interfaces';
 import { DeleteOutlined, LoadingOutlined } from '@ant-design/icons';
@@ -80,9 +80,6 @@ const Cart = () => {
             pageSize: 5,
           }}
           dataSource={dataSource}
-          // footer={
-
-          // }
           renderItem={(item, index) => (
             <List.Item
               key={item.user}
@@ -113,9 +110,9 @@ const Cart = () => {
                   <Typography.Title level={5}>Основные удобства</Typography.Title>
                   <Typography.Paragraph>
                     {item.property.amenities.map((element, idx) => (
-                      <>
+                      <Fragment key={element.slug}>
                         {element.name} {item.property.amenities.length - 1 !== idx && <Divider type='vertical' />}
-                      </>
+                      </Fragment>
                     ))}
                   </Typography.Paragraph>
                 </>
