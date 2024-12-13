@@ -1,4 +1,4 @@
-import { CopyOutlined, HeartOutlined, ShareAltOutlined, UserOutlined } from '@ant-design/icons';
+import { CopyOutlined, HeartFilled, HeartOutlined, ShareAltOutlined, UserOutlined } from '@ant-design/icons';
 import {
   Avatar,
   Button,
@@ -22,7 +22,7 @@ import api from '../../api';
 import { Container } from '../../Components';
 import LoadingComponents from '../../Components/Spinner/LoadingComponents';
 import { getCookie } from '../../helpers/getCookie';
-import { pushUps } from '../../helpers/pushUps';
+import { changeIsFavorite, pushUps } from '../../helpers';
 import views from '../../scss/variables/responsives.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { setSelectedApartment } from '../../store/reducers/apartmentSlices';
@@ -66,9 +66,8 @@ const Apartment = () => {
 
   const onHeartClick = async (event: MouseEvent) => {
     event.stopPropagation();
-    const token = getCookie('auth-token');
-    if (!token) message.warning('Ввойдите в аккаунт чтобы добавить в избранное');
-    await api.setFavorite(selectedApartment?.slug!);
+    await changeIsFavorite(selectedApartment!);
+    dispatch(setSelectedApartment({ ...selectedApartment!, is_favorite: !selectedApartment?.is_favorite }));
   };
 
   const onBookingFinish = async (values: { count: string; date: dayjs.Dayjs[] }) => {
@@ -208,7 +207,15 @@ const Apartment = () => {
                 <div className={classes.apartment_actions}>
                   <span onClick={onHeartClick}>
                     <Tooltip title='Добавить в избранное'>
-                      <HeartOutlined className={classes.latest_like} /> В избранное
+                      {selectedApartment?.is_favorite ? (
+                        <>
+                          <HeartOutlined className={classes.latest_like} /> В избранное
+                        </>
+                      ) : (
+                        <>
+                          <HeartFilled className={classes.latest_like} style={{ color: 'red' }} /> Убрать из избранных
+                        </>
+                      )}
                     </Tooltip>
                   </span>{' '}
                   <Dropdown

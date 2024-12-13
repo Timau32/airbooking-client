@@ -90,13 +90,14 @@ const getPopular = () => authed.get<IItemsResponse<IApartment[]>>('/properties/p
 
 const getCities = () => authed.get<IItemsResponse<ILocations.ICities[]>>('/locations/cities/');
 
-const getCategories = () => authed.get<ICategories[]>('/properties/categories/');  
+const getCategories = () => authed.get<ICategories[]>('/properties/categories/');
 
 const getContries = () => authed.get<IItemsResponse<ILocations.IContries[]>>('/locations/');
 const getRegions = (country_slug: string) =>
   requestTemplate.get<IItemsResponse<ILocations.IRegions[]>>(`/locations/countries/${country_slug}/regions/`);
 
 const bookingApartment = (payload: IBookingPayload) => authed.post<IBooking>(`/bookings/`, payload);
+const flexSearch = (payload: string[]) => authed.post<IApartment[]>('/search/flexible/', { search_strings: payload });
 
 const api = {
   refreshToken,
@@ -113,6 +114,7 @@ const api = {
   removeFavorite,
   bookingApartment,
   getCategories,
+  flexSearch,
 };
 
 export default api;

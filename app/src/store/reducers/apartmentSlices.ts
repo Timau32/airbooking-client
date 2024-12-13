@@ -5,11 +5,13 @@ import { getCookie } from '../../helpers/getCookie';
 type initialStateType = {
   selectedApartment: IApartment | null;
   isLogined: boolean;
+  searchedApartments: IApartment[];
 };
 
 const initialState: initialStateType = {
   selectedApartment: null,
   isLogined: Boolean(getCookie('auth-token')),
+  searchedApartments: [],
 };
 
 const apartmentSlice = createSlice({
@@ -23,10 +25,14 @@ const apartmentSlice = createSlice({
     setIsLogined: (state, action: PayloadAction<boolean>) => {
       state.isLogined = action.payload;
     },
+
+    setSearchedApartments: (state, action: PayloadAction<IApartment[]>) => {
+      state.searchedApartments = action.payload;
+    },
   },
 });
 
 const apartmentReducer = apartmentSlice.reducer;
 
-export const { setSelectedApartment, setIsLogined } = apartmentSlice.actions;
+export const { setSelectedApartment, setIsLogined, setSearchedApartments } = apartmentSlice.actions;
 export default apartmentReducer;
