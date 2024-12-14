@@ -10,7 +10,7 @@ WORKDIR /app
 COPY app/package.json app/package-lock.json ./
 
 # Устанавливаем зависимости (только необходимые для продакшена)
-RUN npm install --production
+RUN npm install
 
 # Копируем весь код приложения
 COPY app ./
