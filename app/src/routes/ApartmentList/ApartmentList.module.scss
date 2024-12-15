@@ -39,6 +39,23 @@
   }
 }
 
+.description {
+  overflow: hidden;
+  max-width: 600px;
+  max-height: 66px;
+
+  p {
+    white-space: nowrap;
+    max-width: 100%;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 @media (max-width: views.$mobile) {
   .title {
     font-size: 21px !important;

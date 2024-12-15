@@ -3,6 +3,7 @@ import {
   Avatar,
   Button,
   Carousel,
+  Collapse,
   DatePicker,
   Dropdown,
   Form,
@@ -27,6 +28,8 @@ import views from '../../scss/variables/responsives.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { setSelectedApartment } from '../../store/reducers/apartmentSlices';
 import classes from './Apartment.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ItemType } from 'rc-collapse/es/interface';
 
 const baseUrl = process.env.REACT_APP_SERVER_API || 'http://houseagency.3730051-ri35659.twc1.net';
 
@@ -89,6 +92,7 @@ const Apartment = () => {
 
       await api.bookingApartment(payload);
       message.success('Вы успешно забронировали квартиру');
+      form.resetFields();
     } catch (err) {
       message.error('Не получается забронировать квартиру');
     } finally {
@@ -107,7 +111,10 @@ const Apartment = () => {
           ) : null}
           <div className={classes.apartment_info}>
             <div className={classes.apartment_details}>
-              <Typography.Title level={2}>{selectedApartment?.title}</Typography.Title>
+              <Typography.Title level={2} className={classes.title}>
+                {selectedApartment?.title}
+              </Typography.Title>
+              <Typography.Title level={5}>Цена: {selectedApartment?.price} сомов в сутки</Typography.Title>
               <div className={classes.apartment_slides}>
                 <Image.PreviewGroup>
                   <Carousel
@@ -152,6 +159,15 @@ const Apartment = () => {
                   focusOnSelect={true}
                   infinite={false}
                   draggable
+                  responsive={[
+                    {
+                      breakpoint: Number(views.mobile),
+                      settings: {
+                        draggable: true,
+                        slidesToShow: selectedApartment?.images.length! > 3 ? 3 : selectedApartment?.images.length || 1,
+                      },
+                    },
+                  ]}
                   className={classes.apartment_dotsSlide}
                 >
                   {selectedApartment?.images.map((img) => (
@@ -171,6 +187,21 @@ const Apartment = () => {
                 className={classes.apartment_description}
                 dangerouslySetInnerHTML={{ __html: selectedApartment?.description || '' }}
               />
+
+              {Boolean(selectedApartment?.amenities.length) && (
+                <div className={classes.amenities}>
+                  <Typography.Title level={4}> Удобства </Typography.Title>
+
+                  <div className={classes.amenities_container}>
+                    {selectedApartment?.amenities.map((amenti) => (
+                      <div key={amenti.slug} className={classes.amenities_item}>
+                        {amenti.icon !== 'None' && <FontAwesomeIcon icon={amenti.icon?.split(',') as any} />}{' '}
+                        {amenti.name}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className={classes.reviews}>
                 <Typography.Title level={4}> Комментарии </Typography.Title>
@@ -206,17 +237,19 @@ const Apartment = () => {
               <div className={classes.sticky}>
                 <div className={classes.apartment_actions}>
                   <span onClick={onHeartClick}>
-                    <Tooltip title='Добавить в избранное'>
-                      {selectedApartment?.is_favorite ? (
+                    {!selectedApartment?.is_favorite ? (
+                      <Tooltip title='Добавить в избранное'>
                         <>
                           <HeartOutlined className={classes.latest_like} /> В избранное
                         </>
-                      ) : (
+                      </Tooltip>
+                    ) : (
+                      <Tooltip title='Убрать из избранных'>
                         <>
                           <HeartFilled className={classes.latest_like} style={{ color: 'red' }} /> Убрать из избранных
                         </>
-                      )}
-                    </Tooltip>
+                      </Tooltip>
+                    )}
                   </span>{' '}
                   <Dropdown
                     trigger={['click']}
@@ -252,10 +285,49 @@ const Apartment = () => {
                       <Input type='number' placeholder='Количество гостей' />
                     </Form.Item>
 
-                    <div className={classes.apartment_priceList}>
-                      <span>Итого:</span>
-                      <span>1900 сомов</span>
-                    </div>
+                    <Form.Item shouldUpdate>
+                      {() => {
+                        const dates = form.getFieldValue('date') as dayjs.Dayjs[];
+                        const items: ItemType[] = [];
+                        let diff = undefined;
+                        if (dates) {
+                          const startDate = dates[0];
+                          const endDate = dates[1];
+                          diff = Math.abs(startDate.diff(endDate, 'day'));
+
+                          items.push({
+                            key: 'more',
+                            label: 'Подробнее',
+                            children: (
+                              <>
+                                <div>
+                                  <span>Количество суток:</span> <span>{diff}</span>
+                                </div>
+                                <div>
+                                  <span>
+                                    {diff} суток х {selectedApartment?.price} сомов ={' '}
+                                    {Number(selectedApartment?.price) * diff} сомов
+                                  </span>
+                                </div>
+                              </>
+                            ),
+                          });
+                        }
+
+                        return (
+                          <>
+                            <div className={classes.apartment_priceList}>
+                              <span>Итого:</span>
+                              <span>
+                                {diff ? Number(selectedApartment?.price) * diff : Number(selectedApartment?.price)}{' '}
+                                сомов
+                              </span>
+                            </div>
+                            {diff && <Collapse items={items} />}
+                          </>
+                        );
+                      }}
+                    </Form.Item>
 
                     <Form.Item shouldUpdate>
                       {() => (

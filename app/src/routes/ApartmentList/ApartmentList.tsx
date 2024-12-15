@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { setSearchedApartments } from '../../store/reducers/apartmentSlices';
 import classes from './ApartmentList.module.scss';
 import LoadingComponents from '../../Components/Spinner/LoadingComponents';
-import { Container } from '../../Components';
+import { Container, Search } from '../../Components';
 import Leaflet from 'leaflet';
 import retinaMarker from 'leaflet/dist/images/marker-icon-2x.png';
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -22,14 +22,14 @@ const ApartmentList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-        // @ts-ignore
-        delete Leaflet.Icon.Default.prototype._getIconUrl;
-        Leaflet.Icon.Default.mergeOptions({
-          iconRetinaUrl: retinaMarker,
-          iconUrl: icon,
-          shadowUrl: shadowMarker,
-        });
-  }, [])
+    // @ts-ignore
+    delete Leaflet.Icon.Default.prototype._getIconUrl;
+    Leaflet.Icon.Default.mergeOptions({
+      iconRetinaUrl: retinaMarker,
+      iconUrl: icon,
+      shadowUrl: shadowMarker,
+    });
+  }, []);
 
   useEffect(() => {
     const fetchData = (term: string[]) => {
@@ -57,7 +57,8 @@ const ApartmentList = () => {
     <>
       <section className={classes.cart}>
         <Container>
-          <Typography.Title level={4} className={classes.title}>
+          <Search />
+          <Typography.Title level={4} style={{marginTop: '30px'}} className={classes.title}>
             Результаты поиска по запросу {searchTerm}
           </Typography.Title>
           <List
@@ -78,6 +79,7 @@ const ApartmentList = () => {
             // }
             renderItem={(item, index) => (
               <List.Item
+                style={{ width: '100%' }} 
                 key={item.slug}
                 extra={
                   <Carousel draggable className={classes.img} slidesToShow={1} dots arrows={false}>
@@ -98,7 +100,7 @@ const ApartmentList = () => {
                 <Typography.Title level={4} className={classes.link} onClick={() => onNavigateToItem(item.slug)}>
                   {item.title}
                 </Typography.Title>
-                <div dangerouslySetInnerHTML={{ __html: item.description }} />
+                <div className={classes.description} dangerouslySetInnerHTML={{ __html: item.description }} />
                 {item.amenities.length ? (
                   <>
                     <Typography.Title level={5}>Основные удобства</Typography.Title>
