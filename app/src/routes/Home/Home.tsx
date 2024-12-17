@@ -116,6 +116,23 @@ const Home = () => {
         </Container>
       </section>
 
+      {homeData.abroads.length && (
+        <section className={classes.section}>
+          <Container>
+            <Typography.Title className={classes.text_center} level={2}>
+              Путешествия
+            </Typography.Title>
+            <div className={classes.latest_apartments}>
+              <ApartmentList>
+                {homeData.abroads.map((apartment) => (
+                  <ApartmentCard setHomeData={setHomeData} key={`apartment-${apartment.id}`} apartment={apartment} />
+                ))}
+              </ApartmentList>
+            </div>
+          </Container>
+        </section>
+      )}
+
       <section className={classes.section}>
         <Container>
           <Typography.Title className={classes.text_center} level={2}>
@@ -145,9 +162,7 @@ const Home = () => {
                   onClick={() => navigate(`/apartments/list?search=all&cities=${cities.id}`)}
                 >
                   <div className={classes.latest_body}>
-                    <p className={classes.cities_results}>
-                      {cities?.includes_property || 0} вариантов
-                    </p>
+                    <p className={classes.cities_results}>{cities?.includes_properties || 0} вариантов</p>
                     <img src={cities.image || imageHolder} alt={cities.name} />
                     <Typography.Paragraph className={classes.latest_title}>{cities.name}</Typography.Paragraph>
                   </div>

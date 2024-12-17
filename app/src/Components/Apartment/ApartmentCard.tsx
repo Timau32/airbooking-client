@@ -1,15 +1,13 @@
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { Carousel, message, Tooltip, Typography } from 'antd';
-import { MouseEvent, SetStateAction, Dispatch } from 'react';
+import axios from 'axios';
+import { Dispatch, MouseEvent, SetStateAction, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCookie } from '../../helpers/getCookie';
+import { changeIsFavorite } from '../../helpers';
 import { IApartment, ICategories, ILocations } from '../../interfaces';
-import classes from './Apartment.module.scss';
 import { useAppDispatch } from '../../store/hook';
 import { setSelectedApartment } from '../../store/reducers/apartmentSlices';
-import api from '../../api';
-import axios from 'axios';
-import { changeIsFavorite } from '../../helpers';
+import classes from './Apartment.module.scss';
 
 type Props = {
   apartment: IApartment;
@@ -84,6 +82,9 @@ const ApartmentCard = ({ apartment, onItemClick, setHomeData }: Props) => {
           {apartment.title}
         </Typography.Paragraph>
       </div>
+      <Typography.Paragraph onClick={onClick} className={classes.mobile_title}>
+        {apartment.title}
+      </Typography.Paragraph>
     </div>
   );
 };
