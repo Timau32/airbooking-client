@@ -9,6 +9,7 @@ import { pushUps } from '../../helpers';
 import { IApartment, ICategories, ILocations } from '../../interfaces';
 import views from '../../scss/variables/responsives.module.scss';
 import classes from './Home.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [loading, setIsLoading] = useState(true);
@@ -17,12 +18,16 @@ const Home = () => {
     holidays: IApartment[];
     cities: ILocations.ICities[];
     categories: ICategories[];
+    abroads: IApartment[];
   }>({
     popular: [],
     holidays: [],
     cities: [],
     categories: [],
+    abroads: [],
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchHomeData();
@@ -35,8 +40,9 @@ const Home = () => {
       const cities = (await api.getCities()).data.results;
       const popular = (await api.getPopular()).data.results;
       const categories = (await api.getCategories()).data;
+      const abroads = (await api.getAbroads()).data.results;
 
-      setHomeData({ popular, holidays, cities, categories });
+      setHomeData({ popular, holidays, cities, categories, abroads });
     } catch (err) {
       console.log(err);
       message.error(pushUps.DEFAULT_FETCH_ERROR, 6);
@@ -78,7 +84,10 @@ const Home = () => {
             {homeData.categories.map(({ id, name, icon }) => {
               return (
                 <div key={`category-${id}`} className={classes.search_category_item}>
-                  <span className={classes.search_category_pointer}>
+                  <span
+                    className={classes.search_category_pointer}
+                    onClick={() => navigate(`/apartments/list?search=all&categories=${id}`)}
+                  >
                     <FontAwesomeIcon icon={icon?.split(',') as any} /> {name}
                   </span>
                 </div>
@@ -130,10 +139,14 @@ const Home = () => {
           <div className={classes.latest_apartments}>
             <Flex className={classes.cities}>
               {homeData.cities.map((cities, idx) => (
-                <div className={classes.latest_item} key={`cities-${cities.id}`}>
+                <div
+                  className={classes.latest_item}
+                  key={`cities-${cities.id}`}
+                  onClick={() => navigate(`/apartments/list?search=all&cities=${cities.id}`)}
+                >
                   <div className={classes.latest_body}>
                     <p className={classes.cities_results}>
-                      {new Intl.NumberFormat('de-DE').format(Math.floor(Math.random() * 10000))} вариантов
+                      {cities?.includes_property || 0} вариантов
                     </p>
                     <img src={cities.image || imageHolder} alt={cities.name} />
                     <Typography.Paragraph className={classes.latest_title}>{cities.name}</Typography.Paragraph>

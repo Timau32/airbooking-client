@@ -1,24 +1,27 @@
-import { Carousel, Divider, List, message, Typography } from 'antd';
-import { Fragment, useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import api from '../../api';
-import { pushUps } from '../../helpers';
-import { useAppDispatch, useAppSelector } from '../../store/hook';
-import { setSearchedApartments } from '../../store/reducers/apartmentSlices';
-import classes from './ApartmentList.module.scss';
-import LoadingComponents from '../../Components/Spinner/LoadingComponents';
-import { Container, Search } from '../../Components';
-import Leaflet from 'leaflet';
+import { Button, Carousel, Checkbox, Collapse, Divider, Drawer, Flex, List, Typography } from 'antd';
+import Leaflet, { LatLngTuple } from 'leaflet';
 import retinaMarker from 'leaflet/dist/images/marker-icon-2x.png';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import shadowMarker from 'leaflet/dist/images/marker-shadow.png';
+import { Fragment, useEffect, useMemo, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Container, Search } from '../../Components';
+import MapView from '../../Components/Map';
+import LoadingComponents from '../../Components/Spinner/LoadingComponents';
+import { fetchSearchData } from '../../store/creators/searchActions';
+import { useAppDispatch, useAppSelector } from '../../store/hook';
+import classes from './ApartmentList.module.scss';
 
 const ApartmentList = () => {
   const [isLaodingSearch, setIsLoadingSearch] = useState(false);
-  const { searchedApartments } = useAppSelector((state) => state.apartment);
-  const dispatch = useAppDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const { searchedApartments, categories, cities } = useAppSelector((state) => state.apartment);
+
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('search');
+  const categoriesTerm = searchParams.get('categories');
+  const citiesTerm = searchParams.get('cities');
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,54 +35,124 @@ const ApartmentList = () => {
   }, []);
 
   useEffect(() => {
-    const fetchData = (term: string[]) => {
+    const fetchData = async (term: string) => {
       setIsLoadingSearch(true);
-
-      api
-        .flexSearch(term)
-        .then((response) => dispatch(setSearchedApartments(response.data)))
-        .catch((err) => message.error(pushUps.DEFAULT_FETCH_ERROR))
-        .finally(() => setIsLoadingSearch(false));
+      await dispatch(fetchSearchData(term));
+      setIsLoadingSearch(false);
     };
 
-    if (searchTerm === 'all') {
-      fetchData(['']);
-    } else if (!searchedApartments.length) {
-      fetchData(searchTerm?.split(' ')!);
+    if (!searchedApartments.length) {
+      fetchData(searchTerm!);
     }
   }, []);
+
+  const filteredApartments = useMemo(() => {
+    const categoryFilter = categoriesTerm?.split(' ').filter((str) => Boolean(str));
+    const cityFilter = citiesTerm?.split(' ').filter((str) => Boolean(str));
+
+    return searchedApartments.filter((apartment) => {
+      let filtereds = true;
+
+      if (categoryFilter?.length) {
+        filtereds = categoryFilter.some((categorySlug) =>
+          apartment.categories.find(({ id }) => String(id) === categorySlug)
+        );
+      }
+
+      if (cityFilter?.length) {
+        filtereds = cityFilter.some((categorySlug) =>
+          apartment.locations.find((location) => String(location.city.id) === categorySlug)
+        );
+      }
+
+      return filtereds;
+    });
+  }, [searchedApartments, categoriesTerm, citiesTerm]);
 
   const onNavigateToItem = (slug: string) => {
     navigate(`/apartments/${slug}`);
   };
 
+  const onFiltersClose = () => setIsOpen(false);
+
+  const positions = filteredApartments.reduce(
+    (accum: any, house) => [...accum, ...house.locations.map(({ latitude, longitude }) => [latitude, longitude])],
+    [] as LatLngTuple[]
+  );
+
+  const bounds = new Leaflet.LatLngBounds(positions);
+  const categoryCheckeds = useMemo(() => categoriesTerm?.split(' ').filter((str) => Boolean(str)), [categoriesTerm]);
+  const citiesCheckeds = useMemo(() => citiesTerm?.split(' ').filter((str) => Boolean(str)), [citiesTerm]);
+
+  const onCategoryChange = (value: string[]) =>
+    navigate(`/apartments/list?search=${searchTerm}&categories=${value.join(' ')}&cities=${citiesTerm || ''}`);
+  const onCitiesChange = (value: string[]) =>
+    navigate(`/apartments/list?search=${searchTerm}&categories=${categoriesTerm || ''}&cities=${value.join(' ')}`);
   return (
     <>
+      <Drawer open={isOpen} onClose={onFiltersClose}>
+        <Typography.Title level={5}>Выберите фильтры</Typography.Title>
+        <Collapse
+          items={[
+            {
+              label: 'Категории',
+              key: 'categories',
+              children: (
+                <Checkbox.Group
+                  onChange={onCategoryChange}
+                  value={categoryCheckeds}
+                  style={{ flexDirection: 'column' }}
+                >
+                  {categories.map((category) => (
+                    <div key={`category-${category.id}`}>
+                      <Checkbox value={String(category.id)}>{category.name}</Checkbox>
+                    </div>
+                  ))}
+                </Checkbox.Group>
+              ),
+            },
+
+            {
+              label: 'Города',
+              key: 'cities',
+              children: (
+                <Checkbox.Group onChange={onCitiesChange} value={citiesCheckeds} style={{ flexDirection: 'column' }}>
+                  {cities.map((city) => (
+                    <div key={`city-${city.id}`}>
+                      <Checkbox value={String(city.id)}>{city.name}</Checkbox>
+                    </div>
+                  ))}
+                </Checkbox.Group>
+              ),
+            },
+          ]}
+        />
+      </Drawer>
       <section className={classes.cart}>
         <Container>
           <Search />
-          <Typography.Title level={4} style={{marginTop: '30px'}} className={classes.title}>
-            Результаты поиска по запросу {searchTerm}
+          <Typography.Title level={4} className={classes.title}>
+            Результаты поиска по запросу: {searchTerm === 'all' ? 'Все' : searchTerm}
           </Typography.Title>
           <List
             itemLayout='vertical'
             size='large'
             loading={isLaodingSearch}
             header={
-              <div style={{ textAlign: 'right' }}>
-                <b>Общее количество избранных:</b> {searchedApartments.length}
-              </div>
+              <Flex justify='space-between' className={classes.managment}>
+                <Button onClick={() => setIsOpen(true)}>Включить фильтры</Button>
+                <div style={{ textAlign: 'right' }}>
+                  <b>Общее количество по результату поиска:</b> {filteredApartments.length}
+                </div>
+              </Flex>
             }
             pagination={{
               pageSize: 10,
             }}
-            dataSource={searchedApartments}
-            // footer={
-
-            // }
+            dataSource={filteredApartments}
             renderItem={(item, index) => (
               <List.Item
-                style={{ width: '100%' }} 
+                style={{ width: '100%' }}
                 key={item.slug}
                 extra={
                   <Carousel draggable className={classes.img} slidesToShow={1} dots arrows={false}>
@@ -113,10 +186,17 @@ const ApartmentList = () => {
                     </Typography.Paragraph>
                   </>
                 ) : null}
+                <Typography.Paragraph>
+                  <b>Цена:</b> {item.price} сом
+                </Typography.Paragraph>
               </List.Item>
             )}
           />
         </Container>
+
+        <div className={classes.mapContainer}>
+          <MapView zoom={13} bounds={bounds} />
+        </div>
       </section>
       {isLaodingSearch && <LoadingComponents />}
     </>

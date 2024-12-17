@@ -1,4 +1,5 @@
 import { CopyOutlined, HeartFilled, HeartOutlined, ShareAltOutlined, UserOutlined } from '@ant-design/icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Avatar,
   Button,
@@ -17,19 +18,18 @@ import {
 } from 'antd';
 import { RangePickerProps } from 'antd/es/date-picker';
 import dayjs from 'dayjs';
+import { ItemType } from 'rc-collapse/es/interface';
 import { CSSProperties, MouseEvent, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../api';
 import { Container } from '../../Components';
 import LoadingComponents from '../../Components/Spinner/LoadingComponents';
-import { getCookie } from '../../helpers/getCookie';
 import { changeIsFavorite, pushUps } from '../../helpers';
+import { getCookie } from '../../helpers/getCookie';
 import views from '../../scss/variables/responsives.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { setSelectedApartment } from '../../store/reducers/apartmentSlices';
 import classes from './Apartment.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ItemType } from 'rc-collapse/es/interface';
 
 const baseUrl = process.env.REACT_APP_SERVER_API || 'http://houseagency.3730051-ri35659.twc1.net';
 
@@ -114,7 +114,10 @@ const Apartment = () => {
               <Typography.Title level={2} className={classes.title}>
                 {selectedApartment?.title}
               </Typography.Title>
-              <Typography.Title level={5}>Цена: {selectedApartment?.price} сомов в сутки</Typography.Title>
+              <Typography.Title level={5} className={classes.price}>
+                Цена: {selectedApartment?.price} сомов в сутки
+                <div className={classes.line}></div>
+              </Typography.Title>
               <div className={classes.apartment_slides}>
                 <Image.PreviewGroup>
                   <Carousel
@@ -195,7 +198,9 @@ const Apartment = () => {
                   <div className={classes.amenities_container}>
                     {selectedApartment?.amenities.map((amenti) => (
                       <div key={amenti.slug} className={classes.amenities_item}>
-                        {amenti.icon !== 'None' && <FontAwesomeIcon icon={amenti.icon?.split(',') as any} />}{' '}
+                        {amenti.icon !== 'None' && amenti.icon !== ',' && (
+                          <FontAwesomeIcon icon={amenti.icon?.split(',') as any} />
+                        )}{' '}
                         {amenti.name}
                       </div>
                     ))}
