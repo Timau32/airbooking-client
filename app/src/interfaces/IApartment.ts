@@ -1,4 +1,5 @@
 import IAmenities from './IAmenities';
+import ICategories from './iCategories';
 import IImage from './IImage';
 import ILocations from './ILocations';
 import IReviews from './IReviews';
@@ -22,4 +23,5 @@ export default interface IApartment {
   updated_at: string;
   is_favorite: boolean | null;
   reviews: IReviews[];
+  categories: ICategories[];
 }

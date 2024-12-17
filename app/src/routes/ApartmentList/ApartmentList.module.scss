@@ -3,6 +3,10 @@
 
 .cart {
   margin: 40px 0;
+  display: flex;
+  gap: 20px;
+  padding: 0 20px;
+  position: relative;
 }
 
 .like {
@@ -21,7 +25,7 @@
 .img {
   background-color: #dedede;
   width: 272px;
-  height: 170px;
+  height: 200px;
   user-select: none;
 
   ul li button {
@@ -34,7 +38,7 @@
 
   &_item {
     width: 272px !important;
-    height: 170px;
+    height: 200px;
     object-fit: cover;
   }
 }
@@ -56,15 +60,43 @@
   }
 }
 
+.mapContainer{
+  width: 45%;
+  max-height: 85vh;
+  position: sticky;
+  top: 100px;
+  left: 0;
+}
+
+.title{
+  margin-top: 30px;
+}
+
 @media (max-width: views.$mobile) {
   .title {
-    font-size: 21px !important;
+    font-size: 16px !important;
   }
 
   .img {
     &_item {
       width: 100% !important;
       height: 170px;
+    }
+  }
+  .mapContainer{
+    width: 100%;
+  }
+
+  .cart{
+    flex-wrap: wrap;
+  }
+
+  .managment{
+    flex-direction: column;
+    gap: 20px;
+    
+    div{
+      font-size: 12px;
     }
   }
 }

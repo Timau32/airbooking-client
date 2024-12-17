@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import App from './App';
 import colors from './scss/variables/colors.module.scss';
 import store from './store';
+import ru_RU from 'antd/es/locale/ru_RU';
 
 import { library } from '@fortawesome/fontawesome-svg-core'; // Библиотека для добавления иконок
 import { fab } from '@fortawesome/free-brands-svg-icons'; // Все иконки из пакета brands
@@ -18,6 +19,7 @@ root.render(
   // <React.StrictMode>
   <Provider store={store}>
     <ConfigProvider
+      locale={ru_RU}
       theme={{
         token: {
           colorPrimary: colors.primary100,

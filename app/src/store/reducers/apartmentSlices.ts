@@ -1,17 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IApartment } from '../../interfaces';
+import { IApartment, ICategories, ILocations } from '../../interfaces';
 import { getCookie } from '../../helpers/getCookie';
+import { fetchSearchData } from '../creators/searchActions';
 
 type initialStateType = {
   selectedApartment: IApartment | null;
   isLogined: boolean;
   searchedApartments: IApartment[];
+  categories: ICategories[];
+  cities: ILocations.ICities[];
 };
 
 const initialState: initialStateType = {
   selectedApartment: null,
   isLogined: Boolean(getCookie('auth-token')),
   searchedApartments: [],
+  categories: [],
+  cities: [],
 };
 
 const apartmentSlice = createSlice({
@@ -29,6 +34,20 @@ const apartmentSlice = createSlice({
     setSearchedApartments: (state, action: PayloadAction<IApartment[]>) => {
       state.searchedApartments = action.payload;
     },
+  },
+
+  extraReducers: (builder) => {
+    builder.addCase(
+      fetchSearchData.fulfilled,
+      (
+        state,
+        action: PayloadAction<{ searched: IApartment[]; categories: ICategories[]; cities: ILocations.ICities[] }>
+      ) => {
+        state.categories = action.payload.categories;
+        state.cities = action.payload.cities;
+        state.searchedApartments = action.payload.searched;
+      }
+    );
   },
 });
 

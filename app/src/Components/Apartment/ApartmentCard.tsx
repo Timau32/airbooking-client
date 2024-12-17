@@ -19,6 +19,7 @@ type Props = {
       popular: IApartment[];
       cities: ILocations.ICities[];
       categories: ICategories[];
+      abroads: IApartment[];
     }>
   >;
   onItemClick?: (slug: string) => void;

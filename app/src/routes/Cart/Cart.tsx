@@ -104,7 +104,7 @@ const Cart = () => {
               <Typography.Title level={4} className={classes.link} onClick={() => onNavigateToItem(item.property.slug)}>
                 {item.property.title}
               </Typography.Title>
-              <div dangerouslySetInnerHTML={{ __html: item.property.description }} />
+              <div className={classes.description} dangerouslySetInnerHTML={{ __html: item.property.description }} />
               {item.property.amenities.length ? (
                 <>
                   <Typography.Title level={5}>Основные удобства</Typography.Title>

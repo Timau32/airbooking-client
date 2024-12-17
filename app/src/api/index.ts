@@ -83,6 +83,8 @@ interface IBookingPayload {
 
 const getApartments = () => authed.get<IItemsResponse<IApartment[]>>('/properties/all/');
 const getApartmentDetail = (slug: string) => authed.get<IApartment>(`/properties/${slug}/`);
+const getAbroads = () => authed.get<IItemsResponse<IApartment[]>>(`/properties/abroad/`);
+
 const getFavorites = () => authed.get<IFavorites[]>('/favorites/');
 const setFavorite = (slug: string) => authed.post(`/favorites/property/${slug}/`);
 const removeFavorite = (slug: string) => authed.delete(`/favorites/property/${slug}/delete/`);
@@ -115,6 +117,7 @@ const api = {
   bookingApartment,
   getCategories,
   flexSearch,
+  getAbroads,
 };
 
 export default api;
