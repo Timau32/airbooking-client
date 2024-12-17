@@ -105,7 +105,7 @@ const Footer = () => {
           <Typography.Paragraph>
             © 2011—2024 Airbooking. All rights reserved by{' '}
             <Typography.Link href='/'>airbooking.com</Typography.Link> & created by {" "}
-            <Typography.Link href='/'>codexstudio</Typography.Link>
+            <Typography.Link href='https://t.me/Utima' target='_blank'>codexstudio</Typography.Link>
           </Typography.Paragraph>
         </Container>
       </div>

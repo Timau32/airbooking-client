@@ -18,7 +18,7 @@ declare namespace ILocations {
     longitude: any;
     updated_at: string;
     created_at: string;
-    includes_property: number;
+    includes_properties: number;
   }
 
   interface IContries {

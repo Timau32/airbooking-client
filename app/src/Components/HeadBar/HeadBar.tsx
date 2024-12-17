@@ -38,7 +38,7 @@ const HeadBar = () => {
   const onMobileMenuOpen = () => setIsMobileMenuOpen(true);
   const onMobileMenuClose = () => setIsMobileMenuOpen(false);
 
-  const scrollTop = () => window.scrollTo({ top: 0 });
+  const scrollTop = () => navigate('/apartments/list?search=all&categories=&cities=');
   const logout = () => {
     navigate('/');
     deleteCookie('auth-token');
@@ -47,6 +47,7 @@ const HeadBar = () => {
   };
 
   const onClick: MenuProps['onClick'] = (event) => {
+    onMobileMenuClose();
     if (menuExcludeItems.includes(event.key)) return;
     navigate(event.key);
   };
@@ -114,7 +115,7 @@ const HeadBar = () => {
                 <div className='line'></div>
               </li>
               <li className={classes.head_item}>
-                <Link to='/' onClick={scrollTop}>
+                <Link to='/apartments/list?search=all&categories=&cities='>
                   <SearchOutlined className={classes.icon} /> Поиск
                 </Link>
                 <div className='line'></div>
@@ -148,7 +149,7 @@ const HeadBar = () => {
 
       <div className={classes.mobile_bottomBar}>
         <div className={classes.mobile_bottomBar_actions}>
-          <Link to='/' onClick={scrollTop} className={classes.mobile_bottomBar_item}>
+          <Link to='/apartments/list?search=all&categories=&cities=' className={classes.mobile_bottomBar_item}>
             <SearchOutlined className={classes.mobile_bottomBar_icon} /> <span>Поиск</span>
           </Link>
           <Link to='/cart' className={classes.mobile_bottomBar_item}>

@@ -6,6 +6,7 @@ import {
   Carousel,
   Collapse,
   DatePicker,
+  Divider,
   Dropdown,
   Form,
   Image,
@@ -183,6 +184,18 @@ const Apartment = () => {
                   ))}
                 </Carousel>
               </div>
+              {selectedApartment?.locations[0] && (
+                <Typography.Title level={5}>
+                  {selectedApartment?.locations[0].address + ',' || ''} {selectedApartment.locations[0].city.name}
+                </Typography.Title>
+              )}
+
+              <Typography.Paragraph>
+                {selectedApartment?.room_count} комнат <Divider type='vertical' style={{ borderWidth: 2 }} />
+                {selectedApartment?.max_guests} гостей <Divider type='vertical' style={{ borderWidth: 2 }} />
+                {selectedApartment?.bathroom_count} ванная <Divider type='vertical' style={{ borderWidth: 2 }} />
+                {selectedApartment?.bed_count} кровати
+              </Typography.Paragraph>
 
               <Typography.Title level={4}>Детальная информация</Typography.Title>
 

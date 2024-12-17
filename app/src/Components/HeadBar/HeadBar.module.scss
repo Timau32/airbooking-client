@@ -72,7 +72,7 @@
 .mobile_bottomBar {
   display: none;
   position: fixed;
-  bottom: 0;
+  bottom: -1px;
   background-color: colors.$black;
   z-index: 999;
   width: 100%;

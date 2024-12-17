@@ -99,17 +99,41 @@
   }
 }
 
+.mobile_title{
+  display: none;
+}
+
 @media (max-width: views.$mobile) {
   .latest_item {
-    height: 250px;
+    height: auto;
+    padding: 5px;
+
+    button[class='slick-arrow slick-prev']::after {
+      display: none;
+    }
+    button[class='slick-arrow slick-next']::after {
+      display: none;
+    }
   }
 
-  .latest_like{
+  .latest_body {
+    height: 210px;
+  }
+
+  .mobile_title {
+    font-size: 12px;
+    display: block;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .latest_like {
     top: 5px;
     right: 5px;
   }
 
-  .latest_title{
+  .latest_title {
     font-size: 12px;
+    display: none;
   }
 }

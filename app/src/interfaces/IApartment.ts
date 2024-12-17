@@ -24,4 +24,7 @@ export default interface IApartment {
   is_favorite: boolean | null;
   reviews: IReviews[];
   categories: ICategories[];
+  max_guests: number;
+  bed_count: number;
+  bathroom_count: number;
 }

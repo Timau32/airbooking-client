@@ -21,6 +21,7 @@ const ApartmentList = ({ children, isInfinite = false, isArrow = false }: Props)
             slidesToScroll: 1,
             slidesToShow: 2,
             centerMode: false,
+            arrows: false
           },
         },
       ]}
