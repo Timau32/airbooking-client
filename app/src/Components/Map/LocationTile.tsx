@@ -2,19 +2,19 @@ import type { LatLngBounds, LatLngTuple } from 'leaflet';
 import { useEffect } from 'react';
 
 import { Marker, Popup, TileLayer, useMap } from 'react-leaflet';
-import { useAppSelector } from '../../store/hook';
+import { IApartment } from '../../interfaces';
 
 type Props = {
   zoom: number;
   initialPosition: LatLngTuple;
   bounds: LatLngBounds;
+  apartments: IApartment[]
 };
 
-const LocationTile = ({ zoom, initialPosition, bounds }: Props) => {
-  const { searchedApartments } = useAppSelector((state) => state.apartment);
+const LocationTile = ({ zoom, initialPosition, bounds, apartments }: Props) => {
   const map = useMap();
 
-  const positions: { position: number[]; fullAdres: string }[] = searchedApartments.reduce(
+  const positions: { position: number[]; fullAdres: string }[] = apartments.reduce(
     (accum: any, house) => [
       ...accum,
       ...house.locations.map(({ latitude, longitude, address, city }) => ({

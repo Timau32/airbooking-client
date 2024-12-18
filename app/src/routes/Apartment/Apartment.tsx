@@ -19,11 +19,13 @@ import {
 } from 'antd';
 import { RangePickerProps } from 'antd/es/date-picker';
 import dayjs from 'dayjs';
+import Leaflet from 'leaflet';
 import { ItemType } from 'rc-collapse/es/interface';
 import { CSSProperties, MouseEvent, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../api';
 import { Container } from '../../Components';
+import MapView from '../../Components/Map';
 import LoadingComponents from '../../Components/Spinner/LoadingComponents';
 import { changeIsFavorite, pushUps } from '../../helpers';
 import { getCookie } from '../../helpers/getCookie';
@@ -100,6 +102,10 @@ const Apartment = () => {
       setIsLoadingBooking(false);
     }
   };
+
+  const bounds = new Leaflet.LatLngBounds(
+    selectedApartment?.locations.map(({ latitude, longitude }) => [latitude, longitude]) || []
+  );
 
   return (
     <>
@@ -250,6 +256,20 @@ const Apartment = () => {
                   )}
                 />
               </div>
+
+              {selectedApartment?.locations[0] && (
+                <div className={classes.map}>
+                  <Typography.Title level={4}>Местоположение</Typography.Title>
+                  <Typography.Paragraph>
+                    {' '}
+                    {selectedApartment?.locations[0].address + ',' || ''} {selectedApartment?.locations[0].city.name}
+                  </Typography.Paragraph>
+
+                  <div className={classes.map_container}>
+                    <MapView dragging={false} apartments={[selectedApartment]} bounds={bounds} zoom={13} />
+                  </div>
+                </div>
+              )}
             </div>
             <div className={classes.apartment_booking}>
               <div className={classes.sticky}>

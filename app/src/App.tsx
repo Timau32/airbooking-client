@@ -8,6 +8,7 @@ import Home from './routes/Home/Home';
 import Main from './routes/Main/Main';
 import Support from './routes/Support/Support';
 import './scss/app.scss';
+import Info from './routes/Info/Info';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route element={<Home />} path='/' />
           <Route element={<Support />} path='/support' />
           <Route element={<Apartment />} path='/apartments/:slug' />
+          <Route element={<Info />} path='/info/:slug' />
           <Route element={<ApartmentList />} path='/apartments/list' />
           <Route
             element={
