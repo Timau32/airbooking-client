@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { getCookie, setCookie } from '../helpers/getCookie';
-import { IApartment, IBooking, ICategories, IFavorites, ILocations } from '../interfaces';
+import { IApartment, IBooking, ICategories, IFavorites, IInfo, ILocations } from '../interfaces';
 
 const authed = axios.create({
   baseURL: process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
@@ -101,6 +101,9 @@ const getRegions = (country_slug: string) =>
 const bookingApartment = (payload: IBookingPayload) => authed.post<IBooking>(`/bookings/`, payload);
 const flexSearch = (payload: string[]) => authed.post<IApartment[]>('/search/flexible/', { search_strings: payload });
 
+const getInfo = () => requestTemplate.get<IInfo[]>('/pages/');
+const getInfoDetail = (slug: string) => requestTemplate.get<IInfo>(`/pages/${slug}`);
+
 const api = {
   refreshToken,
   signIn,
@@ -118,6 +121,8 @@ const api = {
   getCategories,
   flexSearch,
   getAbroads,
+  getInfo,
+  getInfoDetail,
 };
 
 export default api;

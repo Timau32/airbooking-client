@@ -18,3 +18,15 @@ export const fetchSearchData = createAsyncThunk('search/fetchFlex', async (paylo
     return thunkApi.rejectWithValue(pushUps.DEFAULT_FETCH_ERROR);
   }
 });
+
+export const fetchInfo = createAsyncThunk('fetch/info', async (payload, thunkApi) => {
+  try {
+    const response = await api.getInfo();
+
+    return response.data;
+  } catch (err) {
+    console.log(err);
+
+    return thunkApi.rejectWithValue('Oops sorry');
+  }
+});

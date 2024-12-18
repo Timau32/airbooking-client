@@ -7,7 +7,9 @@ import {
   SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Menu, type MenuProps } from 'antd';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FloatButton, Menu, Tooltip, type MenuProps } from 'antd';
 import classNames from 'classnames';
 import { Suspense, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -38,7 +40,11 @@ const HeadBar = () => {
   const onMobileMenuOpen = () => setIsMobileMenuOpen(true);
   const onMobileMenuClose = () => setIsMobileMenuOpen(false);
 
-  const scrollTop = () => navigate('/apartments/list?search=all&categories=&cities=');
+  const scrollTop = () => {
+    navigate('/apartments/list?search=all&categories=&cities=');
+    window.scrollTo({ top: 0 });
+  };
+
   const logout = () => {
     navigate('/');
     deleteCookie('auth-token');
@@ -160,6 +166,16 @@ const HeadBar = () => {
           </div>
         </div>
       </div>
+
+      <FloatButton
+      style={{bottom: 70}}
+        onClick={scrollTop}
+        icon={
+          <Tooltip title={'Карта'}>
+            <FontAwesomeIcon icon={faMapMarkerAlt} />
+          </Tooltip>
+        }
+      />
     </>
   );
 };

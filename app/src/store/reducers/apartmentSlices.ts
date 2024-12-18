@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IApartment, ICategories, ILocations } from '../../interfaces';
+import { IApartment, ICategories, IInfo, ILocations } from '../../interfaces';
 import { getCookie } from '../../helpers/getCookie';
-import { fetchSearchData } from '../creators/searchActions';
+import { fetchInfo, fetchSearchData } from '../creators/searchActions';
 
 type initialStateType = {
   selectedApartment: IApartment | null;
@@ -9,6 +9,8 @@ type initialStateType = {
   searchedApartments: IApartment[];
   categories: ICategories[];
   cities: ILocations.ICities[];
+  info: IInfo[];
+  isLoadingInfo: boolean;
 };
 
 const initialState: initialStateType = {
@@ -17,6 +19,8 @@ const initialState: initialStateType = {
   searchedApartments: [],
   categories: [],
   cities: [],
+  info: [],
+  isLoadingInfo: false,
 };
 
 const apartmentSlice = createSlice({
@@ -48,6 +52,19 @@ const apartmentSlice = createSlice({
         state.searchedApartments = action.payload.searched;
       }
     );
+
+    builder.addCase(fetchInfo.pending, (state) => {
+      state.isLoadingInfo = true;
+    });
+
+    builder.addCase(fetchInfo.fulfilled, (state, action: PayloadAction<IInfo[]>) => {
+      state.isLoadingInfo = false;
+      state.info = action.payload;
+    });
+
+    builder.addCase(fetchInfo.rejected, (state) => {
+      state.isLoadingInfo = false;
+    });
   },
 });
 

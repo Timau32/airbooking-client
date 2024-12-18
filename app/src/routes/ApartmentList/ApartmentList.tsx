@@ -1,8 +1,6 @@
 import { Button, Carousel, Checkbox, Collapse, Divider, Drawer, Flex, List, Typography } from 'antd';
 import Leaflet, { LatLngTuple } from 'leaflet';
-import retinaMarker from 'leaflet/dist/images/marker-icon-2x.png';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import shadowMarker from 'leaflet/dist/images/marker-shadow.png';
+
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Container, Search } from '../../Components';
@@ -23,16 +21,6 @@ const ApartmentList = () => {
   const citiesTerm = searchParams.get('cities');
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // @ts-ignore
-    delete Leaflet.Icon.Default.prototype._getIconUrl;
-    Leaflet.Icon.Default.mergeOptions({
-      iconRetinaUrl: retinaMarker,
-      iconUrl: icon,
-      shadowUrl: shadowMarker,
-    });
-  }, []);
 
   useEffect(() => {
     const fetchData = async (term: string) => {
@@ -195,7 +183,7 @@ const ApartmentList = () => {
         </Container>
 
         <div className={classes.mapContainer}>
-          <MapView zoom={13} bounds={bounds} />
+          <MapView zoom={13} apartments={searchedApartments} bounds={bounds} />
         </div>
       </section>
       {isLaodingSearch && <LoadingComponents />}

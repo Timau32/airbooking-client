@@ -178,6 +178,14 @@
   }
 }
 
+.map{
+  margin-top: 20px;
+
+  &_container{
+    position: sticky;
+  }
+}
+
 @media (max-width: views.$mobile) {
   .amenities_item {
     width: 100%;
@@ -207,5 +215,9 @@
     small{
       width: 100%;
     }
+  }
+
+  .map_container{
+    height: 70vh;
   }
 }
