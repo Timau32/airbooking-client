@@ -19,7 +19,7 @@ const LocationTile = ({ zoom, initialPosition, bounds, apartments }: Props) => {
       ...accum,
       ...house.locations.map(({ latitude, longitude, address, city }) => ({
         position: [latitude, longitude],
-        fullAdres: `${address || ''} ${city.name}, ${city.region.country.name}`,
+        fullAdres: `${address || ''} ${city.name}, ${city?.region?.country?.name || ''}`,
       })),
     ],
     [] as any

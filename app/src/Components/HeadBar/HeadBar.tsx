@@ -87,9 +87,9 @@ const HeadBar = () => {
 
     {
       key: 'phone',
-      label: '+996 772 61 91 05',
+      label: '+996 220 64 11 89',
       icon: <PhoneOutlined className={classes.icon} />,
-      onClick: () => (window.location.href = 'tel:+996772619105'),
+      onClick: () => (window.location.href = 'tel:+996220641189'),
     },
   ];
 
@@ -127,8 +127,8 @@ const HeadBar = () => {
                 <div className='line'></div>
               </li>
               <li className={classes.head_item}>
-                <Link to='tel:+996772619105'>
-                  <PhoneOutlined className={classes.icon} /> +996 772 61 91 05
+                <Link to='tel:+996220641189'>
+                  <PhoneOutlined className={classes.icon} /> +996 220 64 11 89
                 </Link>
                 <div className='line'></div>
               </li>
