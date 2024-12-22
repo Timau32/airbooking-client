@@ -43,13 +43,13 @@ const ApartmentList = () => {
 
       if (categoryFilter?.length) {
         filtereds = categoryFilter.some((categorySlug) =>
-          apartment.categories.find(({ id }) => String(id) === categorySlug)
+          Boolean(apartment.categories.find(({ id }) => String(id) === categorySlug))
         );
       }
 
       if (cityFilter?.length) {
         filtereds = cityFilter.some((categorySlug) =>
-          apartment.locations.find((location) => String(location.city.id) === categorySlug)
+          Boolean(apartment.locations.find((location) => location.city?.id === Number(categorySlug)))
         );
       }
 
@@ -117,73 +117,78 @@ const ApartmentList = () => {
         />
       </Drawer>
       <section className={classes.cart}>
-        <Container>
-          <Search />
-          <Typography.Title level={4} className={classes.title}>
-            Результаты поиска по запросу: {searchTerm === 'all' ? 'Все' : searchTerm}
-          </Typography.Title>
-          <List
-            itemLayout='vertical'
-            size='large'
-            loading={isLaodingSearch}
-            header={
-              <Flex justify='space-between' className={classes.managment}>
-                <Button onClick={() => setIsOpen(true)}>Включить фильтры</Button>
-                <div style={{ textAlign: 'right' }}>
-                  <b>Общее количество по результату поиска:</b> {filteredApartments.length}
-                </div>
-              </Flex>
-            }
-            pagination={{
-              pageSize: 10,
-            }}
-            dataSource={filteredApartments}
-            renderItem={(item, index) => (
-              <List.Item
-                style={{ width: '100%' }}
-                key={item.slug}
-                extra={
-                  <Carousel draggable className={classes.img} slidesToShow={1} dots arrows={false}>
-                    {item.images.length ? (
-                      item.images.map((image) => (
-                        <img key={image.id} className={classes.img_item} alt='logo' src={image?.image} />
-                      ))
-                    ) : (
-                      <img
-                        alt='logo'
-                        className={classes.img_item}
-                        src={'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'}
-                      />
-                    )}
-                  </Carousel>
-                }
-              >
-                <Typography.Title level={4} className={classes.link} onClick={() => onNavigateToItem(item.slug)}>
-                  {item.title}
-                </Typography.Title>
-                <div className={classes.description} dangerouslySetInnerHTML={{ __html: item.description }} />
-                {item.amenities.length ? (
-                  <>
-                    <Typography.Title level={5}>Основные удобства</Typography.Title>
-                    <Typography.Paragraph>
-                      {item.amenities.map((element, idx) => (
-                        <Fragment key={element.slug}>
-                          {element.name} {item.amenities.length - 1 !== idx && <Divider type='vertical' />}
-                        </Fragment>
-                      ))}
-                    </Typography.Paragraph>
-                  </>
-                ) : null}
-                <Typography.Paragraph>
-                  <b>Цена:</b> {item.price} сом
-                </Typography.Paragraph>
-              </List.Item>
-            )}
-          />
-        </Container>
+        <div className={classes.content}>
+          <Container>
+            <div className={classes.search}>
+              <Search />
+            </div>
+            <Typography.Title level={4} className={classes.title}>
+              <div className={classes.swipe}></div>
+              Результаты поиска по запросу: {searchTerm === 'all' ? 'Все' : searchTerm}
+            </Typography.Title>
+            <List
+              itemLayout='vertical'
+              size='large'
+              loading={isLaodingSearch}
+              header={
+                <Flex justify='space-between' className={classes.managment}>
+                  <Button onClick={() => setIsOpen(true)}>Включить фильтры</Button>
+                  <div style={{ textAlign: 'right' }}>
+                    <b>Общее количество по результату поиска:</b> {filteredApartments.length}
+                  </div>
+                </Flex>
+              }
+              pagination={{
+                pageSize: 10,
+              }}
+              dataSource={filteredApartments}
+              renderItem={(item, index) => (
+                <List.Item
+                  style={{ width: '100%' }}
+                  key={item.slug}
+                  extra={
+                    <Carousel draggable className={classes.img} slidesToShow={1} dots arrows={false}>
+                      {item.images.length ? (
+                        item.images.map((image) => (
+                          <img key={image.id} className={classes.img_item} alt='logo' src={image?.image} />
+                        ))
+                      ) : (
+                        <img
+                          alt='logo'
+                          className={classes.img_item}
+                          src={'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'}
+                        />
+                      )}
+                    </Carousel>
+                  }
+                >
+                  <Typography.Title level={4} className={classes.link} onClick={() => onNavigateToItem(item.slug)}>
+                    {item.title}
+                  </Typography.Title>
+                  <div className={classes.description} dangerouslySetInnerHTML={{ __html: item.description }} />
+                  {item.amenities.length ? (
+                    <>
+                      <Typography.Title level={5}>Основные удобства</Typography.Title>
+                      <Typography.Paragraph>
+                        {item.amenities.map((element, idx) => (
+                          <Fragment key={element.slug}>
+                            {element.name} {item.amenities.length - 1 !== idx && <Divider type='vertical' />}
+                          </Fragment>
+                        ))}
+                      </Typography.Paragraph>
+                    </>
+                  ) : null}
+                  <Typography.Paragraph>
+                    <b>Цена:</b> {item.price} сом
+                  </Typography.Paragraph>
+                </List.Item>
+              )}
+            />
+          </Container>
+        </div>
 
         <div className={classes.mapContainer}>
-          <MapView zoom={13} apartments={searchedApartments} bounds={bounds} />
+          <MapView zoom={13} apartments={filteredApartments} bounds={bounds} />
         </div>
       </section>
       {isLaodingSearch && <LoadingComponents />}

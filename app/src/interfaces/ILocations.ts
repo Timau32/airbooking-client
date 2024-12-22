@@ -9,7 +9,7 @@ declare namespace ILocations {
   }
 
   interface ICities {
-    id: string;
+    id: string | number;
     name: string;
     slug: string;
     image: string;
