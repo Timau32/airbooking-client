@@ -76,7 +76,7 @@ const Apartment = () => {
     dispatch(setSelectedApartment({ ...selectedApartment!, is_favorite: !selectedApartment?.is_favorite }));
   };
 
-  const onBookingFinish = async (values: { count: string; date: dayjs.Dayjs[], phone_number: string }) => {
+  const onBookingFinish = async (values: { count: string; date: dayjs.Dayjs[]; phone_number: string }) => {
     try {
       setIsLoadingBooking(true);
       const token = getCookie('auth-token');
@@ -192,7 +192,8 @@ const Apartment = () => {
               </div>
               {selectedApartment?.locations[0] && (
                 <Typography.Title level={5}>
-                  {selectedApartment?.locations[0].address + ',' || ''} {selectedApartment.locations[0].city.name}
+                  {selectedApartment?.locations[0].address ? selectedApartment?.locations[0].address + ',' : ''}{' '}
+                  {selectedApartment.locations[0]?.city?.name || ''}
                 </Typography.Title>
               )}
 
@@ -262,7 +263,8 @@ const Apartment = () => {
                   <Typography.Title level={4}>Местоположение</Typography.Title>
                   <Typography.Paragraph>
                     {' '}
-                    {selectedApartment?.locations[0].address + ',' || ''} {selectedApartment?.locations[0].city.name}
+                    {selectedApartment?.locations[0].address + ',' || ''}{' '}
+                    {selectedApartment?.locations[0]?.city?.name || ''}
                   </Typography.Paragraph>
 
                   <div className={classes.map_container}>
