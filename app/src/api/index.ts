@@ -104,6 +104,8 @@ const flexSearch = (payload: string[]) => authed.post<IApartment[]>('/search/fle
 const getInfo = () => requestTemplate.get<IInfo[]>('/pages/');
 const getInfoDetail = (slug: string) => requestTemplate.get<IInfo>(`/pages/${slug}`);
 
+const sendMessageToSupport = (payload: any) => requestTemplate.post('/support/', payload);
+
 const api = {
   refreshToken,
   signIn,
@@ -123,6 +125,7 @@ const api = {
   getAbroads,
   getInfo,
   getInfoDetail,
+  sendMessageToSupport,
 };
 
 export default api;
