@@ -25,6 +25,7 @@ const MapView = ({ zoom, bounds, apartments, dragging = true,  }: Props) => {
       iconUrl: icon,
       shadowUrl: shadowMarker,
     });
+
   }, []);
   const mapRef = useRef<Map>(null);
   const initialPosition = [40.52939913919699, 72.79727950121293] as LatLngTuple;

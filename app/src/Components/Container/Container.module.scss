@@ -1,4 +1,12 @@
-.container{
-    width: 87%;
-    margin: 0 auto;
+@use '../../scss/variables/responsives.module.scss' as views;
+
+.container {
+  width: 87%;
+  margin: 0 auto;
+}
+
+@media (max-width: views.$mobile) {
+  .container {
+    width: 92%;
+  }
 }

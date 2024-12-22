@@ -76,7 +76,7 @@ const Apartment = () => {
     dispatch(setSelectedApartment({ ...selectedApartment!, is_favorite: !selectedApartment?.is_favorite }));
   };
 
-  const onBookingFinish = async (values: { count: string; date: dayjs.Dayjs[] }) => {
+  const onBookingFinish = async (values: { count: string; date: dayjs.Dayjs[], phone_number: string }) => {
     try {
       setIsLoadingBooking(true);
       const token = getCookie('auth-token');
@@ -321,6 +321,10 @@ const Apartment = () => {
 
                     <Form.Item name='count' label='Введит количество гостей' required>
                       <Input type='number' placeholder='Количество гостей' />
+                    </Form.Item>
+
+                    <Form.Item name='phone_number' label='Введит номер телефона для связи' required>
+                      <Input type='tel' placeholder='+999 999 99 99 99' />
                     </Form.Item>
 
                     <Form.Item shouldUpdate>

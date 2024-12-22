@@ -58,7 +58,7 @@ const ApartmentCard = ({ apartment, onItemClick, setHomeData }: Props) => {
   return (
     <div className={classes.latest_item}>
       <div className={classes.latest_body}>
-        <Tooltip title={apartment.is_favorite ? 'Добавить в избранное' : 'Убрать из избранных'}>
+        <Tooltip title={!apartment.is_favorite ? 'Добавить в избранное' : 'Убрать из избранных'}>
           {apartment.is_favorite ? (
             <HeartFilled style={{ color: 'red' }} onClick={onHeartClick} className={classes.latest_like} />
           ) : (
