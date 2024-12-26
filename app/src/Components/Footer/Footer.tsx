@@ -1,4 +1,10 @@
-import { GooglePlusOutlined, TwitterOutlined, WhatsAppOutlined, YoutubeOutlined } from '@ant-design/icons';
+import {
+  GooglePlusOutlined,
+  InstagramOutlined,
+  TwitterOutlined,
+  WhatsAppOutlined,
+  YoutubeOutlined,
+} from '@ant-design/icons';
 import { Divider, Flex, Typography } from 'antd';
 import { useEffect, useMemo } from 'react';
 import logo from '../../assets/img/logo-white.png';
@@ -7,9 +13,11 @@ import { fetchInfo } from '../../store/creators/searchActions';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 import Container from '../Container/Container';
 import classes from './Footer.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebook, faTelegram } from '@fortawesome/free-brands-svg-icons';
 
 const Footer = () => {
-  const { info } = useAppSelector((state) => state.apartment);
+  const { info, globalSettings } = useAppSelector((state) => state.apartment);
   const dispatch = useAppDispatch();
   const CATEGORY_CHOICES = ['other', 'for_guests', 'for_hosts', 'about'];
   const infoStore: Record<string, IInfo[]> = useMemo(() => {
@@ -80,18 +88,21 @@ const Footer = () => {
             <Typography.Title level={3}>Подписывайтесь на нас</Typography.Title>
 
             <div className={classes.footer_icons}>
-              <span className={classes.footer_icon}>
+              <Typography.Link href={globalSettings?.gmail} target='_blank' className={classes.footer_icon}>
                 <GooglePlusOutlined className={classes.size} />
-              </span>
-              <span className={classes.footer_icon}>
-                <YoutubeOutlined className={classes.size} />
-              </span>
-              <span className={classes.footer_icon}>
+              </Typography.Link>
+              <Typography.Link href={globalSettings?.facebook} target='_blank' className={classes.footer_icon}>
+                <FontAwesomeIcon icon={faFacebook} className={classes.size} />
+              </Typography.Link>
+              <Typography.Link href={globalSettings?.whatsapp} target='_blank' className={classes.footer_icon}>
                 <WhatsAppOutlined className={classes.size} />
-              </span>
-              <span className={classes.footer_icon}>
-                <TwitterOutlined className={classes.size} />
-              </span>
+              </Typography.Link>
+              <Typography.Link href={globalSettings?.telegram} target='_blank' className={classes.footer_icon}>
+                <FontAwesomeIcon icon={faTelegram} className={classes.size} />
+              </Typography.Link>
+              <Typography.Link href={globalSettings?.instagram} target='_blank' className={classes.footer_icon}>
+                <InstagramOutlined className={classes.size} />
+              </Typography.Link>
             </div>
           </div>
         </Container>

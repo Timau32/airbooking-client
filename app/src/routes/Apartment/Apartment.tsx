@@ -33,19 +33,16 @@ import views from '../../scss/variables/responsives.module.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { setSelectedApartment } from '../../store/reducers/apartmentSlices';
 import classes from './Apartment.module.scss';
+import { bookingStatusEnum, IBooking } from '../../interfaces';
 
 const baseUrl = process.env.REACT_APP_SERVER_API || 'http://houseagency.3730051-ri35659.twc1.net';
 
 const { RangePicker } = DatePicker;
 
-const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-  // Can not select days before today and today
-  return current && current < dayjs().endOf('day');
-};
-
 const Apartment = () => {
   const [loading, setIsLoading] = useState(false);
   const [isLaodingBooking, setIsLoadingBooking] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState<IBooking[]>([]);
   const [form] = Form.useForm();
   const mainSlideRef = useRef<any>(null);
   const dotsSlideRef = useRef<any>(null);
@@ -56,7 +53,27 @@ const Apartment = () => {
 
   useEffect(() => {
     fetchApartmentDetails();
+    api
+      .getApartmentOccupied(params.slug!)
+      .then((res) =>
+        setSelectedBooking(res.data.occupied_dates.filter(({ status }) => status === bookingStatusEnum.APPROVED))
+      )
+      .catch((err) => {
+        message.error(pushUps.DEFAULT_FETCH_ERROR);
+        console.log(err);
+      });
   }, []);
+
+  const disableSpecificDates: RangePickerProps['disabledDate'] = (current, info) => {
+    const days = dayjs().endOf('day');
+    const disabledBeforToday = current && current < days;
+    const disabledSpecificDates = selectedBooking.some(
+      ({ start_date, end_date }) => current > dayjs(start_date).endOf('day') && current < dayjs(end_date).endOf('day')
+    );
+
+    // Disable dates that match those in the disabledDates array
+    return disabledBeforToday || disabledSpecificDates;
+  };
 
   const fetchApartmentDetails = async () => {
     try {
@@ -318,7 +335,7 @@ const Apartment = () => {
                 <div className={classes.apartment_bookingCard}>
                   <Form onFinish={onBookingFinish} layout='vertical' form={form}>
                     <Form.Item name='date' label='Выберите дату' required>
-                      <RangePicker disabledDate={disabledDate} showTime placeholder={['Дата заезда', 'Дата отъезда']} />
+                      <RangePicker disabledDate={disableSpecificDates} placeholder={['Дата заезда', 'Дата отъезда']} />
                     </Form.Item>
 
                     <Form.Item name='count' label='Введит количество гостей' required>
