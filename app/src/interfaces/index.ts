@@ -8,5 +8,21 @@ import IBooking from './IBooking';
 import IReviews from './IReviews';
 import ICategories from './iCategories';
 import IInfo from './IInfo';
+import IGlobal from './IGlobal';
+import { bookingStatusEnum } from './IBooking';
 
-export type { IUser, IApartment, ILocations, IImage, IFavorites, IAmenities, IBooking, IReviews, ICategories, IInfo };
+export type {
+  IUser,
+  IApartment,
+  ILocations,
+  IImage,
+  IFavorites,
+  IAmenities,
+  IBooking,
+  IReviews,
+  ICategories,
+  IInfo,
+  IGlobal,
+};
+
+export { bookingStatusEnum };

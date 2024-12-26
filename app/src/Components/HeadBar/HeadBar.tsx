@@ -11,11 +11,12 @@ import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FloatButton, Menu, Tooltip, type MenuProps } from 'antd';
 import classNames from 'classnames';
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, SigninModal, SignupModal } from '../';
 import logo from '../../assets/img/logo-white.png';
 import { deleteCookie } from '../../helpers/getCookie';
+import fetchGlobalSettings from '../../store/creators/globalActions';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { setIsLogined } from '../../store/reducers/apartmentSlices';
 import classes from './HeadBar.module.scss';
@@ -27,7 +28,7 @@ const HeadBar = () => {
   const [isSigninOpen, setIsSigninOpen] = useState<boolean>(false);
   const [isSignupOpen, setIsSignupOpen] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const { isLogined } = useAppSelector((state) => state.apartment);
+  const { isLogined, globalSettings } = useAppSelector((state) => state.apartment);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -39,6 +40,10 @@ const HeadBar = () => {
 
   const onMobileMenuOpen = () => setIsMobileMenuOpen(true);
   const onMobileMenuClose = () => setIsMobileMenuOpen(false);
+
+  useEffect(() => {
+    dispatch(fetchGlobalSettings());
+  }, []);
 
   const scrollTop = () => {
     navigate('/apartments/list?search=all&categories=&cities=');
@@ -89,7 +94,7 @@ const HeadBar = () => {
       key: 'phone',
       label: '+996 220 64 11 89',
       icon: <PhoneOutlined className={classes.icon} />,
-      onClick: () => (window.location.href = 'tel:+996220641189'),
+      onClick: () => (window.location.href = `tel:${globalSettings?.phone}`),
     },
   ];
 
@@ -127,8 +132,8 @@ const HeadBar = () => {
                 <div className='line'></div>
               </li>
               <li className={classes.head_item}>
-                <Link to='tel:+996220641189'>
-                  <PhoneOutlined className={classes.icon} /> +996 220 64 11 89
+                <Link to={`tel:${globalSettings?.phone}`}>
+                  <PhoneOutlined className={classes.icon} /> {globalSettings?.phone}
                 </Link>
                 <div className='line'></div>
               </li>
@@ -168,7 +173,7 @@ const HeadBar = () => {
       </div>
 
       <FloatButton
-      style={{bottom: 70}}
+        style={{ bottom: 70 }}
         onClick={scrollTop}
         icon={
           <Tooltip title={'Карта'}>

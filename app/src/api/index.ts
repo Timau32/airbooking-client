@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { getCookie, setCookie } from '../helpers/getCookie';
-import { IApartment, IBooking, ICategories, IFavorites, IInfo, ILocations } from '../interfaces';
+import { IApartment, IBooking, ICategories, IFavorites, IGlobal, IInfo, ILocations } from '../interfaces';
 
 const authed = axios.create({
   baseURL: process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
@@ -105,6 +105,10 @@ const getInfo = () => requestTemplate.get<IInfo[]>('/pages/');
 const getInfoDetail = (slug: string) => requestTemplate.get<IInfo>(`/pages/${slug}`);
 
 const sendMessageToSupport = (payload: any) => requestTemplate.post('/support/', payload);
+const getGlobalSettings = () => requestTemplate.get<IGlobal>('/settings/');
+
+const getApartmentOccupied = (slug: string) =>
+  requestTemplate.get<{ occupied_dates: IBooking[] }>(`/bookings/occupied/${slug}/`);
 
 const api = {
   refreshToken,
@@ -126,6 +130,8 @@ const api = {
   getInfo,
   getInfoDetail,
   sendMessageToSupport,
+  getGlobalSettings,
+  getApartmentOccupied,
 };
 
 export default api;

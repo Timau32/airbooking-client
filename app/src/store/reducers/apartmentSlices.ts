@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IApartment, ICategories, IInfo, ILocations } from '../../interfaces';
+import { IApartment, ICategories, IGlobal, IInfo, ILocations } from '../../interfaces';
 import { getCookie } from '../../helpers/getCookie';
 import { fetchInfo, fetchSearchData } from '../creators/searchActions';
+import fetchGlobalSettings from '../creators/globalActions';
 
 type initialStateType = {
   selectedApartment: IApartment | null;
@@ -11,6 +12,7 @@ type initialStateType = {
   cities: ILocations.ICities[];
   info: IInfo[];
   isLoadingInfo: boolean;
+  globalSettings: IGlobal | null;
 };
 
 const initialState: initialStateType = {
@@ -21,6 +23,7 @@ const initialState: initialStateType = {
   cities: [],
   info: [],
   isLoadingInfo: false,
+  globalSettings: null,
 };
 
 const apartmentSlice = createSlice({
@@ -64,6 +67,10 @@ const apartmentSlice = createSlice({
 
     builder.addCase(fetchInfo.rejected, (state) => {
       state.isLoadingInfo = false;
+    });
+
+    builder.addCase(fetchGlobalSettings.fulfilled, (state, action: PayloadAction<IGlobal>) => {
+      state.globalSettings = action.payload;
     });
   },
 });
