@@ -8,9 +8,7 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.server
     ports:
-      - "9003:3000"
-    volumes:
-      - ../app:/app
-      - /app/node_modules
+      - "9003:80"
+    restart: unless-stopped
     environment:
       - NODE_ENV=production
