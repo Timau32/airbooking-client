@@ -1,16 +1,15 @@
-// @ts-nocheck
-import axios from 'axios';
+import axios, { InternalAxiosRequestConfig } from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import { getCookie, setCookie } from '../helpers/getCookie';
+import { deleteCookie, getCookie, setCookie } from '../helpers/getCookie';
 import { IApartment, IBooking, ICategories, IFavorites, IGlobal, IInfo, ILocations } from '../interfaces';
 
 const authed = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
+  baseURL: process.env.REACT_APP_SERVER_API,
   withCredentials: true,
 });
 
 const requestTemplate = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_API || 'https://houseagency.3730051-ri35659.twc1.net/api',
+  baseURL: process.env.REACT_APP_SERVER_API,
   withCredentials: true,
 });
 
