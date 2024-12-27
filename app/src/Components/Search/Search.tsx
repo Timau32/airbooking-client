@@ -27,7 +27,7 @@ const Search = () => {
 
     timeoutId = setTimeout(async () => {
       try {
-        const response = await api.flexSearch(value.split(' ').filter((str) => Boolean(str)));
+        const response = await api.flexSearch(value.length ? value.split(' ').filter((str) => Boolean(str)) : ['']);
         setOptions(response.data.map(({ slug, title }) => ({ value: title, key: slug })));
         dispatch(setSearchedApartments(response.data));
       } catch (err) {
