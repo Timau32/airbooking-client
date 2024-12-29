@@ -7,6 +7,7 @@ import { useAppDispatch } from '../../store/hook';
 import { setSearchedApartments } from '../../store/reducers/apartmentSlices';
 import Spinner from '../Spinner/Spinner';
 import classes from './Search.module.scss';
+import { SearchOutlined } from '@ant-design/icons';
 
 let timeoutId: NodeJS.Timeout | undefined = undefined;
 
@@ -62,6 +63,7 @@ const Search = () => {
       <Input.Search
         size='large'
         onKeyDown={onKeyPress}
+        enterButton={<SearchOutlined onClick={()=>setOptions([])} />}
         className={classes.search}
         placeholder='Напишите город/адрес или название апартаментов'
       />
