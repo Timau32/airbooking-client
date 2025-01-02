@@ -54,7 +54,7 @@ const Search = () => {
     navigate(`/apartments/${option.key}`);
   };
   const handleSearchClick = () => {
-    const searchValue = inputRef.current?.input?.value || ''; // Получаем значение из рефа
+    const searchValue = inputRef.current?.input?.value || 'all'; // Получаем значение из рефа
     setOptions([]); // Закрываем список автокомплита
     navigate(
       `/apartments/list?search=${searchValue}&categories=${categoriesTerm || ''}&cities=${citiesTerm || ''}`
