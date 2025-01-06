@@ -1,5 +1,6 @@
 import IAmenities from './IAmenities';
 import ICategories from './iCategories';
+import IGroup from './IGroups';
 import IImage from './IImage';
 import ILocations from './ILocations';
 import IReviews from './IReviews';
@@ -27,4 +28,6 @@ export default interface IApartment {
   max_guests: number;
   bed_count: number;
   bathroom_count: number;
+  related_group_properties: IApartment[];
+  groups: IGroup[];
 }

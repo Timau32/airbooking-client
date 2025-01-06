@@ -1,0 +1,56 @@
+@use '../../scss/variables/responsives.module.scss' as views;
+@use '../../scss/variables/colors.module.scss' as colors;
+
+.img {
+  &_item {
+    background-color: #dedede;
+    width: 272px;
+    height: 160px;
+    user-select: none;
+  }
+}
+
+.groupList {
+  margin-top: 20px;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+
+  div[class='ant-collapse-header'] {
+    padding: 6px 7px !important;
+  }
+}
+
+.plus {
+  color: colors.$success;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.minus {
+  color: colors.$error;
+  margin-right: 5px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.title{
+    position: sticky;
+    top: 90px;
+    left: 0px;
+    z-index: 3;
+}
+
+@media (max-width: views.$mobile) {
+  .managment {
+    flex-direction: column;
+    gap: 20px;
+
+    div {
+      font-size: 12px;
+    }
+  }
+}

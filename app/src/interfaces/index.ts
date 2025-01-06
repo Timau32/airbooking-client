@@ -10,6 +10,7 @@ import ICategories from './iCategories';
 import IInfo from './IInfo';
 import IGlobal from './IGlobal';
 import { bookingStatusEnum } from './IBooking';
+import IGroup from './IGroups';
 
 export type {
   IUser,
@@ -23,6 +24,7 @@ export type {
   ICategories,
   IInfo,
   IGlobal,
+  IGroup,
 };
 
 export { bookingStatusEnum };

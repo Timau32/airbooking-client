@@ -24,7 +24,7 @@ import { ItemType } from 'rc-collapse/es/interface';
 import { CSSProperties, MouseEvent, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../api';
-import { Container } from '../../Components';
+import { Container, GroupList } from '../../Components';
 import MapView from '../../Components/Map';
 import LoadingComponents from '../../Components/Spinner/LoadingComponents';
 import { changeIsFavorite, pushUps } from '../../helpers';
@@ -108,7 +108,7 @@ const Apartment = () => {
         start_time: startDate.format('HH:mm'),
         end_time: endDate.format('HH:mm'),
         number_of_guests: Number(values.count),
-        phone_number: values.phone_number
+        phone_number: values.phone_number,
       };
 
       await api.bookingApartment(payload);
@@ -228,6 +228,10 @@ const Apartment = () => {
                 className={classes.apartment_description}
                 dangerouslySetInnerHTML={{ __html: selectedApartment?.description || '' }}
               />
+
+              {Boolean(selectedApartment?.related_group_properties.length) && (
+                <GroupList items={selectedApartment?.related_group_properties!} />
+              )}
 
               {Boolean(selectedApartment?.amenities.length) && (
                 <div className={classes.amenities}>

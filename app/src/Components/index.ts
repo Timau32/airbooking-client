@@ -7,6 +7,7 @@ import Container from './Container/Container';
 import SigninModal from './Modals/Signin/SigninModal';
 import SignupModal from './Modals/Signup/SignupModal';
 import Spinner from './Spinner/Spinner';
+import GroupList from './GroupList/GroupList';
 
 export {
   HeadBar,
@@ -18,4 +19,5 @@ export {
   SigninModal,
   SignupModal,
   Spinner,
+  GroupList,
 };
