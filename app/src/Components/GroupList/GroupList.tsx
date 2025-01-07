@@ -1,9 +1,10 @@
-import { Fragment, MouseEvent, useMemo, useState } from 'react';
-import { Button, Collapse, Divider, Flex, List, Typography } from 'antd';
+import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Collapse, Divider, Flex, List, Typography } from 'antd';
+import { useMemo, useState } from 'react';
 import { IApartment } from '../../interfaces';
+import { useAppDispatch } from '../../store/hook';
+import { setSelectedApartment } from '../../store/reducers/apartmentSlices';
 import classes from './GroupList.module.scss';
-import { useNavigate } from 'react-router-dom';
-import { MinusCircleOutlined, PlusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 type Props = {
   items: IApartment[];
@@ -33,8 +34,11 @@ const GroupList = ({ items }: Props) => {
     },
   });
 
-  const navigate = useNavigate();
-  const onNavigateToItem = (slug: string) => navigate(`/apartments/${slug}`);
+  const dispatch = useAppDispatch();
+  const onNavigateToItem = (slug: string) => {
+    window.location.href = `/apartments/${slug}`;
+    dispatch(setSelectedApartment(null));
+  };
   const filterKeys = useMemo(() => Object.keys(filters), []);
 
   const onFilterChange = (type: string, count: number) => {

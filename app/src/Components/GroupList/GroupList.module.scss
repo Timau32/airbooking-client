@@ -21,6 +21,18 @@
   div[class='ant-collapse-header'] {
     padding: 6px 7px !important;
   }
+
+  div[class='ant-list-header']{
+    position: sticky;
+    background-color: #fff;
+    z-index: 3;
+    top: 75px;
+    left: 0px;
+  }
+}
+
+.link{
+  cursor: pointer;
 }
 
 .plus {
