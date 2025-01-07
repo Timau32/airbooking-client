@@ -229,7 +229,7 @@ const Apartment = () => {
                 dangerouslySetInnerHTML={{ __html: selectedApartment?.description || '' }}
               />
 
-              {Boolean(selectedApartment?.related_group_properties.length) && (
+              {Boolean(selectedApartment?.related_group_properties?.length) && (
                 <GroupList items={selectedApartment?.related_group_properties!} />
               )}
 
